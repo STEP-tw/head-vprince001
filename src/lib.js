@@ -15,4 +15,10 @@ const extractCharacters = function(length, contents) {
   return contents.split("").splice(0,length).join("");
 };
 
-module.exports = { classifyDetails, extractLines, extractCharacters };
+const readFile = function(readFileSync, files) { 
+  return files.map((file) => readFileSync(file,'utf8'));
+};
+
+module.exports = {
+  classifyDetails, extractLines, 
+  extractCharacters, readFile };

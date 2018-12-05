@@ -1,9 +1,8 @@
 const {equal, deepEqual} = require('assert');
 
 const { 
-  classifyDetails,
-  extractLines,
-  extractCharacters
+  classifyDetails, extractLines,
+  extractCharacters, readFile
 } = require('../src/lib.js'); 
 
 let returnConstant = function(constant){ return constant; }; 
@@ -62,3 +61,9 @@ describe('extractCharacters returns characters of given text as per the given in
   });
 });
 
+describe('readFile returns the result as per the mapper function', () => {
+  it('should return same output as per the input', () => {
+    deepEqual(readFile(returnConstant,[0,0,0]),[0,0,0]);
+    deepEqual(readFile(returnConstant,['a','a','a']),['a','a','a']);
+  });
+});
