@@ -1,18 +1,21 @@
-/* 
-  Usage:
-  node ./head.js file1
-  node ./head.js -n5 file1
-  node ./head.js -n 5 file1
-  node ./head.js -5 file1
-  node ./head.js file1 file2
-  node ./head.js -n 5 file1 file2
-  node ./head.js -n5 file1 file2
-  node ./head.js -5 file1 file2 
-  node ./head.js -c5 file1
-  node ./head.js -c 5 file1
-  node ./head.js -c5 file1 file2
-  node ./head.js -c 5 file1 file2
-*/
+const {
+  classifyDetails,
+  getFileData
+  } = require('./src/lib.js');
 
+const fs = require('fs');
 
+const head = function(usrInput) {
+  let content = [];
 
+  let details = classifyDetails(usrInput);
+  let file = details[0];
+
+  for(let count=0; count<file.length; count++) {
+    if(file.length > 1) {
+      console.log("==>"+file[count]+"<==");
+    }
+    console.log(getFileData(fs.readFileSync(file[count],'utf8'), details[2], details[1]));
+  }
+}
+head(process.argv.slice(2));

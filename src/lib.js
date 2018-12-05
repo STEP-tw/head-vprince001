@@ -16,7 +16,7 @@ const getNumOfLines = function(args) {
     string = args.join('');
     string = string.slice(index);
   }
-  return Math.abs(parseInt(string)) || 10;
+  return Math.abs(parseInt(string));
 }
 
 const classifyDetails = function(usrInput) { 
@@ -33,8 +33,4 @@ const getFileData = function(data, type='n', length=10) {
   return data.split('').slice(0,length).join('');
 };
 
-const readFile = function(readFileSync, files) { 
-  return files.map((file) => readFileSync(file,'utf8'));
-};
-
-module.exports = { classifyDetails, readFile };
+module.exports = { classifyDetails, getFileData };
