@@ -15,7 +15,7 @@ const head = function(usrInput) {
     if(file.length > 1) {
       console.log("==>"+file[count]+"<==");
     }
-    console.log(getFileData(fs.readFileSync(file[count],'utf8'), details[2], details[1]));
+    console.log(getFileData(fs.readFileSync(file[count],'utf8'), details[1], details[2]));
   }
 }
 head(process.argv.slice(2));

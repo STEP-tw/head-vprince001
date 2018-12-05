@@ -20,13 +20,16 @@ const getNumOfLines = function(args) {
 }
 
 const classifyDetails = function(usrInput) { 
+  if(usrInput.length < 1) {
+    return [];
+  }
   let fileName = retrieveFileNames(usrInput);
   let numberOfLines = getNumOfLines(retrieveTypeAndLength(usrInput));
   let type = extractType(retrieveTypeAndLength(usrInput));
   return [fileName, numberOfLines, type];
 };
 
-const getFileData = function(data, type='n', length=10) {
+const getFileData = function(data, length=10, type='n') {
   if(type == 'n') {
     return data.split('\n').slice(0,length).join('\n');
   }
