@@ -11,4 +11,8 @@ const extractLines = function(length, contents) {
   return contents.split("\n").splice(0,length).join("\n");
 };
 
-module.exports = { classifyDetails, extractLines };
+const extractCharacters = function(length, contents) {
+  return contents.split("").splice(0,length).join("");
+};
+
+module.exports = { classifyDetails, extractLines, extractCharacters };
