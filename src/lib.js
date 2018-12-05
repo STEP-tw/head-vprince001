@@ -7,4 +7,8 @@ const classifyDetails = function(details) {
   };
 };
 
-module.exports = { classifyDetails };
+const extractLines = function(length, contents) {
+  return contents.split("\n").splice(0,length).join("\n");
+};
+
+module.exports = { classifyDetails, extractLines };
