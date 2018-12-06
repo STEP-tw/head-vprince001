@@ -1,19 +1,14 @@
 const {
   classifyDetails,
-  getFileData
-  } = require('./src/lib.js');
+  getFileData,
+  addHeading,
+  head
+} = require('./src/lib.js');
 
-const fs = require('fs');
+const { readFileSync } = require('fs');
 
-const head = function(usrInput) {
-  let details = classifyDetails(usrInput);
-  let file = details[0];
+const main = function(usrInput, readFile) {
+  console.log(head(usrInput, readFile));
+};
 
-  for(let count=0; count<file.length; count++) {
-    if(file.length > 1) {
-      console.log("==>"+file[count]+"<==");
-    }
-    console.log(getFileData(fs.readFileSync(file[count],'utf8'), details[1], details[2]));
-  }
-}
-head(process.argv.slice(2));
+main(process.argv.slice(2), readFileSync);
