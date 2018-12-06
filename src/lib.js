@@ -1,4 +1,4 @@
-const head = function(usrInput, readFile) {
+const head = function(usrInput, fs) {
   let output = "";
   let newLine = "";
   let {type, numberOfLines, fileNames} = classifyDetails(usrInput);
@@ -8,11 +8,18 @@ const head = function(usrInput, readFile) {
       output += newLine + addHeading(fileNames[count]) + "\n";
       newLine = "\n";
     }
-    output += (getFileData(readFile(fileNames[count],'utf-8'), numberOfLines, type));
+    output += (getFileData(readFile(fs, fileNames[count]), numberOfLines, type));
     output += newLine;
   }
   return output;
 };
+
+const readFile = function(fs, file){
+  if(fs.existsSync(file)){
+    return fs.readFileSync(file,'utf-8');
+  }
+  return "head: "+ file +": No such file or directory";
+}
 
 const classifyDetails = function(usrInput) { 
   if(usrInput[0][0] == '-') {
