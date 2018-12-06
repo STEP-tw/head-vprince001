@@ -6,8 +6,6 @@ const {
 const fs = require('fs');
 
 const head = function(usrInput) {
-  let content = [];
-
   let details = classifyDetails(usrInput);
   let file = details[0];
 

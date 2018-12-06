@@ -1,6 +1,16 @@
-const retrieveFileNames = (x=>x.filter(file => file.includes('.')));
+const classifyDetails = function(usrInput) { 
+  if(usrInput.length == 0) {
+    return [];
+  }
+  let fileName = retrieveFileNames(usrInput);
+  let numberOfLines = getNumOfLines(retrieveTypeAndLength(usrInput));
+  let type = extractType(retrieveTypeAndLength(usrInput));
+  return [fileName, numberOfLines, type];
+};
 
 const retrieveTypeAndLength = (x=>x.filter(file => !file.includes('.')));
+
+const retrieveFileNames = (x=>x.filter(file => file.includes('.')));
 
 const extractType = function(input) {
   input = input.join('');
@@ -18,16 +28,6 @@ const getNumOfLines = function(args) {
   }
   return Math.abs(parseInt(string));
 }
-
-const classifyDetails = function(usrInput) { 
-  if(usrInput.length < 1) {
-    return [];
-  }
-  let fileName = retrieveFileNames(usrInput);
-  let numberOfLines = getNumOfLines(retrieveTypeAndLength(usrInput));
-  let type = extractType(retrieveTypeAndLength(usrInput));
-  return [fileName, numberOfLines, type];
-};
 
 const getFileData = function(data, length=10, type='n') {
   if(type == 'n') {
