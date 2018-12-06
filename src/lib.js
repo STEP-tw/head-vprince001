@@ -41,7 +41,7 @@ const getNumOfLines = function(args) {
     string = args.join('');
     string = string.slice(index);
   }
-  return Math.abs(parseInt(string));
+  return Math.abs(parseInt(string)) || 10;
 };
 
 const retrieveFileNames = (x=>x.filter(file => file.includes('.')));
@@ -58,5 +58,7 @@ const addHeading = function(head) {
 };
 
 module.exports = {
-  classifyDetails, getFileData, 
-  head, retrieveTypeAndLength, addHeading };
+  classifyDetails, getFileData, head,
+  retrieveTypeAndLength, addHeading,
+  getNumOfLines
+};

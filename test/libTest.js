@@ -2,7 +2,7 @@ const {equal, deepEqual} = require('assert');
 
 const { 
   classifyDetails, retrieveTypeAndLength,
-  addHeading
+  addHeading, getNumOfLines
 } = require('../src/lib.js'); 
 
 let returnConstant = function(constant){ return constant; }; 
@@ -31,6 +31,21 @@ describe('retrieveTypeAndLength', () => {
   it('should return array consisting type and length for given type and length', () => {
     let expectedOutput = ['-n', 5];
     deepEqual(retrieveTypeAndLength(['-n','5','file1.txt']), expectedOutput);
+  });
+
+});
+    
+describe('getNumOfLines', () => {
+  it('should return 10 if length is not given', () => {
+    equal(getNumOfLines([]), 10);
+  });
+
+  it('should return numerical value from array consisting length and type together', () => {
+    equal(getNumOfLines(['-n5']), 5);
+  });
+
+  it('should return numerical value from array consisting length and type seperated', () => {
+    equal(getNumOfLines(['-n', 5]), 5);
   });
 
 });
