@@ -8,14 +8,20 @@ const head = function(usrInput, fs) {
   }
 
   for(let count=0; count<fileNames.length; count++) {
-    if(fileNames.length > 1 && isFileExists(fs, fileNames[count]) ) {
-      output += newLine + addHeading(fileNames[count]) + "\n";
-      newLine = "\n";
+    let fileStatus = isFileExists(fs, fileNames[count]); 
+    if(fileNames.length > 1 && fileStatus) {
+      output.push( newLine + addHeading(fileNames[count]) );
     }
-    output += (getFileData(readFile(fs, fileNames[count]), numberOfLines, type));
-    output += newLine;
+    newLine = "\n";
+
+    let data = readFile(fs, fileNames[count]);
+    output.push(data);
+    if(fileStatus){
+      output.pop();
+      output.push(getFileData(data, numberOfLines, type));
+    }
   }
-  return output;
+  return output.join('\n');
 };
 
 const isFileExists = function(fs, fileName) {
