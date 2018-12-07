@@ -2,7 +2,7 @@ const {equal, deepEqual} = require('assert');
 
 const { 
   classifyDetails, retrieveTypeAndLength,
-  addHeading, getNumOfLines
+  addHeading, getNumOfLines, isFileExists
 } = require('../src/lib.js'); 
 
 let returnConstant = function(constant){ return constant; }; 
@@ -20,18 +20,6 @@ describe('classifyDetails', () => {
   });
 });
 
-describe('retrieveTypeAndLength', () => {
-  it('should return empty array for empty array', () => {
-    deepEqual(retrieveTypeAndLength([]), []);
-  });
-
-  it('should return array consisting type and length for given type and length', () => {
-    let expectedOutput = ['-n', 5];
-    deepEqual(retrieveTypeAndLength(['-n','5','file1.txt']), expectedOutput);
-  });
-
-});
-    
 describe('getNumOfLines', () => {
   it('should return 10 if length is not given', () => {
     equal(getNumOfLines([]), 10);
@@ -60,6 +48,23 @@ describe('addHeading', function(){
 
   it('should create a head line when no file name is given', function(){
     equal(addHeading(), '==> undefined <==');
+  });
+
+});
+
+describe('isFileExists', () => {
+  let fsTrue = {
+    existsSync : (file)=> { return true; }
+  }
+  it('should return true if file exists', () => {
+    deepEqual(isFileExists(fsTrue, 'file1'), true);
+  });
+
+  let fsFalse = {
+    existsSync: (file)=> { return false; }
+  }
+  it('should return false if file does not exist', () => {
+    deepEqual(isFileExists(fsFalse, 'file2'), false);
   });
 
 });

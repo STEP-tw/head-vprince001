@@ -1,5 +1,5 @@
 const head = function(usrInput, fs) {
-  let output = "";
+  let output = [];
   let newLine = "";
   let {type, numberOfLines, fileNames} = classifyDetails(usrInput);
 
@@ -8,7 +8,7 @@ const head = function(usrInput, fs) {
   }
 
   for(let count=0; count<fileNames.length; count++) {
-    if(fileNames.length > 1 && isFileExist(fs, fileNames[count]) ) {
+    if(fileNames.length > 1 && isFileExists(fs, fileNames[count]) ) {
       output += newLine + addHeading(fileNames[count]) + "\n";
       newLine = "\n";
     }
@@ -18,14 +18,14 @@ const head = function(usrInput, fs) {
   return output;
 };
 
-const isFileExist = function(fs, fileName) {
+const isFileExists = function(fs, fileName) {
   return fs.existsSync(fileName);
 };
 
 
 const readFile = function(fs, fileName){
-  if(isFileExist(fs, fileName)) {
-    return fs.readFileSync(fileName,'utf-8');
+  if(isFileExists(fs, fileName)) {
+    return fs.readFileSync(fileName,'utf-8').trim();
   }
   return "head: "+ fileName +": No such file or directory";
 }
@@ -90,5 +90,6 @@ const addHeading = function(head) {
 
 module.exports = {
   classifyDetails, getFileData, head,
-  addHeading, getNumOfLines
+  addHeading, getNumOfLines,
+  isFileExists
 };
