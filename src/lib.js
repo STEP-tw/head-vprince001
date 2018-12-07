@@ -3,6 +3,10 @@ const head = function(usrInput, fs) {
   let newLine = "";
   let {type, numberOfLines, fileNames} = classifyDetails(usrInput);
 
+  if(numberOfLines < 1 || isNaN(numberOfLines)) {
+    return "head: illegal line count -- " + numberOfLines;
+  }
+
   for(let count=0; count<fileNames.length; count++) {
     if(fileNames.length > 1) {
       output += newLine + addHeading(fileNames[count]) + "\n";
@@ -46,16 +50,13 @@ const getHeadParameters = function(headParameters){
   return {
     type : headParameters[0][1], numberOfLines : headParameters[0].slice(2), fileNames : headParameters.slice(1)
   };
-}
-
+};
 
 const extractType = function(input) {
   input = input.join('');
   if(input.includes('-c')) { return 'c';}
   return 'n';
 };
-
-const retrieveTypeAndLength = (x=>x.filter(file => !file.includes('.')));
 
 const getNumOfLines = function(args) {
   let string = args.join('');
@@ -84,6 +85,5 @@ const addHeading = function(head) {
 
 module.exports = {
   classifyDetails, getFileData, head,
-  retrieveTypeAndLength, addHeading,
-  getNumOfLines
+  addHeading, getNumOfLines
 };
