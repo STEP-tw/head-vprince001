@@ -4,7 +4,9 @@ const head = function(usrInput, fs) {
   let {type, numberOfLines, fileNames} = classifyDetails(usrInput);
 
   if(numberOfLines < 1 || isNaN(numberOfLines)) {
-    return "head: illegal line count -- " + numberOfLines;
+    let property = "line";
+    if(type == "c") { property = "byte"; };
+    return "head illegal " + property + " count -- " + numberOfLines;
   }
 
   for(let count=0; count<fileNames.length; count++) {
@@ -97,5 +99,5 @@ const addHeading = function(head) {
 module.exports = {
   classifyDetails, getFileData, head,
   addHeading, getNumOfLines,
-  isFileExists
+  isFileExists, getHeadParameters
 };

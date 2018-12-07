@@ -2,7 +2,8 @@ const {equal, deepEqual} = require('assert');
 
 const { 
   classifyDetails, retrieveTypeAndLength,
-  addHeading, getNumOfLines, isFileExists
+  addHeading, getNumOfLines, isFileExists,
+  getHeadParameters
 } = require('../src/lib.js'); 
 
 let returnConstant = function(constant){ return constant; }; 
@@ -65,6 +66,58 @@ describe('isFileExists', () => {
   }
   it('should return false if file does not exist', () => {
     deepEqual(isFileExists(fsFalse, 'file2'), false);
+  });
+
+});
+
+describe('getHeadParameters', () => {
+
+  it('should return an object of type, numberOfLines and fileNames for -n and one file name', () => {
+    let input = [ '-n1', 'file.txt' ];
+    let expectedOutput = { type : 'n', numberOfLines : 1, fileNames : ['file.txt'] };
+    deepEqual( getHeadParameters(input), expectedOutput );
+  });
+
+  it('should return an object of type, numberOfLines and fileNames for -n1 and two file names', () => {
+    let input = [ '-n1', 'file1.txt', 'file2.txt' ];
+    let expectedOutput = { type : 'n', numberOfLines : 1, fileNames : [ 'file1.txt', 'file2.txt' ] };
+    deepEqual( getHeadParameters(input), expectedOutput );
+  });
+
+  it('should return an object of type, numberOfLines and fileNames for -n, 1 and one file name', () => {
+    let input = [ '-n', '1', 'file1.txt' ];
+    let expectedOutput = { type : 'n', numberOfLines : 1, fileNames : [ 'file1.txt' ] };
+    deepEqual( getHeadParameters(input), expectedOutput );
+  });
+
+  it('should return an object of type, numberOfLines and fileNames for -n, 1 and two file names', () => {
+    let input = [ '-n', '1', 'file1.txt', 'file2.txt' ];
+    let expectedOutput = { type : 'n', numberOfLines : 1, fileNames : [ 'file1.txt', 'file2.txt' ] };
+    deepEqual( getHeadParameters(input), expectedOutput );
+  });
+
+  it('should return an object of type, numberOfLines and fileNames -c1, and one file name', () => {
+    let input = [ '-c1', 'file1.txt' ];
+    let expectedOutput = { type : 'c', numberOfLines : 1, fileNames : [ 'file1.txt' ] };
+    deepEqual( getHeadParameters(input), expectedOutput );
+  });
+
+  it('should return an object of type, numberOfLines and fileNames -c1, and two file names', () => {
+    let input = [ '-c1', 'file1.txt', 'file2.txt' ];
+    let expectedOutput = { type : 'c', numberOfLines : 1, fileNames : [ 'file1.txt', 'file2.txt' ] };
+    deepEqual( getHeadParameters(input), expectedOutput );
+  });
+
+  it('should return an object of type, numberOfLines and fileNames -c, 1 and one file name', () => {
+    let input = [ '-c', '1', 'file1.txt' ];
+    let expectedOutput = { type : 'c', numberOfLines : 1, fileNames : [ 'file1.txt' ] };
+    deepEqual( getHeadParameters(input), expectedOutput );
+  });
+
+  it('should return an object of type, numberOfLines and fileNames -c, 1 and two file names', () => {
+    let input = [ '-c', '1', 'file1.txt', 'file2.txt' ];
+    let expectedOutput = { type : 'c', numberOfLines : 1, fileNames : [ 'file1.txt', 'file2.txt' ] };
+    deepEqual(getHeadParameters(input), expectedOutput );
   });
 
 });
