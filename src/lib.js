@@ -26,18 +26,6 @@ const head = function(usrInput, fs) {
   return output.join('\n');
 };
 
-const isFileExists = function(fs, fileName) {
-  return fs.existsSync(fileName);
-};
-
-
-const readFile = function(fs, fileName){
-  if(isFileExists(fs, fileName)) {
-    return fs.readFileSync(fileName,'utf-8').trim();
-  }
-  return "head: "+ fileName +": No such file or directory";
-}
-
 const classifyDetails = function(usrInput) { 
   if(usrInput[0][0] == '-') {
     return getHeadParameters(usrInput);
@@ -65,25 +53,26 @@ const getHeadParameters = function(headParameters){
   };
 };
 
+const isFileExists = function(fs, fileName) {
+  return fs.existsSync(fileName);
+};
+
+const addHeading = function(head) {
+  return "==> "+head+" <==";
+};
+
+const readFile = function(fs, fileName){
+  if(isFileExists(fs, fileName)) {
+    return fs.readFileSync(fileName,'utf-8').trim();
+  }
+  return "head: "+ fileName +": No such file or directory";
+};
+
 const extractType = function(input) {
   input = input.join('');
   if(input.includes('-c')) { return 'c';}
   return 'n';
 };
-
-const getNumOfLines = function(args) {
-  let string = args.join('');
-  let index=0;
-  while(!parseInt(string) && index < args.join('').length) {
-    index++;
-    string = args.join('');
-    string = string.slice(index);
-  }
-
-  return Math.abs(parseInt(string)) || 10;
-};
-
-const retrieveFileNames = (x=>x.filter(file => file));
 
 const getFileData = function(data, length=10, type='n') {
   if(type == 'n') {
@@ -92,12 +81,7 @@ const getFileData = function(data, length=10, type='n') {
   return data.split('').slice(0,length).join('');
 };
 
-const addHeading = function(head) {
-  return "==> "+head+" <==";
-};
-
 module.exports = {
   classifyDetails, getFileData, head,
-  addHeading, getNumOfLines,
-  isFileExists, getHeadParameters
+  addHeading, isFileExists, getHeadParameters
 };

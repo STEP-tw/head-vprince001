@@ -2,16 +2,10 @@ const { equal, deepEqual } = require("assert");
 
 const {
   classifyDetails,
-  retrieveTypeAndLength,
   addHeading,
-  getNumOfLines,
   isFileExists,
   getHeadParameters
 } = require("../src/lib.js");
-
-let returnConstant = function(constant) {
-  return constant;
-};
 
 describe("classifyDetails", () => {
   it("should return object of assigned details of file 1", () => {
@@ -36,19 +30,7 @@ describe("classifyDetails", () => {
   });
 });
 
-describe("getNumOfLines", () => {
-  it("should return 10 if length is not given", () => {
-    equal(getNumOfLines([]), 10);
-  });
-
-  it("should return numerical value from array consisting length and type together", () => {
-    equal(getNumOfLines(["-n5"]), 5);
-  });
-
-  it("should return numerical value from array consisting length and type seperated", () => {
-    equal(getNumOfLines(["-n", 5]), 5);
-  });
-});
+//====================================================================================================
 
 describe("addHeading", function() {
   it("should create a head line using a file name", function() {
@@ -64,6 +46,8 @@ describe("addHeading", function() {
     equal(addHeading(), "==> undefined <==");
   });
 });
+
+//====================================================================================================
 
 describe("isFileExists", () => {
   let fsTrue = {
@@ -84,6 +68,8 @@ describe("isFileExists", () => {
     deepEqual(isFileExists(fsFalse, "file2"), false);
   });
 });
+
+//====================================================================================================
 
 describe("getHeadParameters", () => {
   it("should return an object of type, numberOfLines and fileNames for -n and one file name", () => {

@@ -1,7 +1,4 @@
 const {
-  classifyDetails,
-  getFileData,
-  addHeading,
   head
 } = require("./src/lib.js");
 
