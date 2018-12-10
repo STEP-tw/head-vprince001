@@ -1,6 +1,4 @@
 const head = function(usrInput, fs) {
-  let output = [];
-  let newLine = "";
   let {type, numberOfLines, fileNames} = classifyDetails(usrInput);
 
   if(numberOfLines < 1 || isNaN(numberOfLines)) {
@@ -9,8 +7,17 @@ const head = function(usrInput, fs) {
     return "head: illegal " + property + " count -- " + numberOfLines;
   }
 
+  let output = runHead(type, numberOfLines, fileNames, fs);
+  return output.join('\n');
+};
+
+const runHead = function(type, numberOfLines, fileNames, fs) {
+  let output = [];
+  let newLine = "";
+
   for(let count=0; count<fileNames.length; count++) {
     let fileStatus = isFileExists(fs, fileNames[count]); 
+
     if(fileNames.length > 1 && fileStatus) {
       output.push( newLine + addHeading(fileNames[count]) );
     }
@@ -23,7 +30,7 @@ const head = function(usrInput, fs) {
       output.push(getFileData(data, numberOfLines, type));
     }
   }
-  return output.join('\n');
+  return output;
 };
 
 const classifyDetails = function(usrInput) { 
