@@ -36,7 +36,8 @@ const runHead = function(type, numberOfLines, fileNames, fs) {
 const tail = function(usrInput, fs) {
   let {type, numberOfLines, fileNames} = classifyDetails(usrInput);
 
-  if(numberOfLines < 1 || isNaN(numberOfLines)) {
+  numberOfLines = Math.abs(numberOfLines);
+  if(isNaN(numberOfLines)) {
     let property = "line";
     if(type == "c") { property = "byte"; };
     return "tail: illegal offset -- " + numberOfLines;
