@@ -33,6 +33,46 @@ const runHead = function(type, numberOfLines, fileNames, fs) {
   return output;
 };
 
+const tail = function(usrInput, fs) {
+  let {type, numberOfLines, fileNames} = classifyDetails(usrInput);
+
+  if(numberOfLines < 1 || isNaN(numberOfLines)) {
+    let property = "line";
+    if(type == "c") { property = "byte"; };
+    return "tail: illegal offset -- " + numberOfLines;
+  }
+
+  let output = runTail(type, numberOfLines, fileNames, fs);
+  return output.join('\n');
+};
+
+const runTail = function(type, numberOfLines, fileNames, fs) {
+  let output = [];
+  let newLine = "";
+
+  for(let count=0; count<fileNames.length; count++) {
+    let fileStatus = isFileExists(fs, fileNames[count]); 
+
+    if(fileNames.length > 1 && fileStatus) {
+      output.push( newLine + addHeading(fileNames[count]) );
+    }
+    newLine = "\n";
+
+    let data = reverseData(readFile(fs, fileNames[count]));
+
+    output.push(data);
+    if(fileStatus){
+      output.pop();
+      output.push(reverseData(getFileData(data, numberOfLines, type)));
+    }
+  }
+  return output;
+};
+
+const reverseData = function(data) {
+  return data.split("").reverse().join("");
+};
+
 const classifyDetails = function(usrInput) { 
   if(usrInput[0][0] == '-') {
     return getHeadParameters(usrInput);
@@ -90,5 +130,6 @@ const getFileData = function(data, length=10, type='n') {
 
 module.exports = {
   classifyDetails, getFileData, head,
-  addHeading, isFileExists, getHeadParameters
+  addHeading, isFileExists, getHeadParameters,
+  tail
 };
