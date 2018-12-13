@@ -4,7 +4,8 @@ const {
   classifyDetails,
   addHeading,
   isFileExists,
-  getHeadParameters
+  getHeadParameters,
+  head
 } = require("../src/lib.js");
 
 describe("classifyDetails", () => {
@@ -150,5 +151,28 @@ describe("getHeadParameters", () => {
       fileNames: ["file1.txt", "file2.txt"]
     };
     deepEqual(getHeadParameters(input), expectedOutput);
+  });
+});
+
+//====================================================================================================
+
+describe("head", function () {
+  let readFile = function(unicode,file) {
+    return file;
+  }
+  let readFileSync = readFile.bind(null,'utf8');
+  let existsSync = file => true;
+  let fs = { readFileSync, existsSync };
+
+  it("should return head of the file with given specifications for lines", function () {
+    let data = "This is the data\nwhich should be in a file\nUsed as a variable";
+    let userArgs = ["-n2", data];
+    deepEqual(head(userArgs, fs), "This is the data\nwhich should be in a file");
+  });
+
+  it("should return head of the file with given specifications for characters", function () {
+    data = "This is the data";
+    userArgs = ["-c", "4", data];
+    deepEqual(head(userArgs, fs), "This");
   });
 });
