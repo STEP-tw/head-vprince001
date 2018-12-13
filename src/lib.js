@@ -130,7 +130,14 @@ const getFileData = function(data, length=10, type='n') {
 };
 
 module.exports = {
-  classifyDetails, getFileData, head, runHead,
-  addHeading, isFileExists, getHeadParameters,
-  tail, runTail
+  head,
+  runHead,
+  tail,
+  runTail,
+  reverseData,
+  classifyDetails,
+  getFileData,
+  addHeading,
+  isFileExists,
+  getHeadParameters,
 };
