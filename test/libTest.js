@@ -5,7 +5,7 @@ const {
   addHeading,
   isFileExists,
   getHeadParameters,
-  head
+  head, runHead
 } = require("../src/lib.js");
 
 describe("classifyDetails", () => {
@@ -174,5 +174,30 @@ describe("head", function () {
     data = "This is the data";
     userArgs = ["-c", "4", data];
     deepEqual(head(userArgs, fs), "This");
+  });
+});
+
+//====================================================================================================
+
+describe("runHead", function () {
+  let readFile = function(unicode,file) {
+    return file;
+  }
+  let readFileSync = readFile.bind(null,'utf8');
+  let existsSync = file => true;
+  let fs = { readFileSync, existsSync };
+
+  let file1 = "Hello";
+  let file2 = "How are you?";
+  let expectedOutput1 = [ '==> Hello <==', 'Hel', '\n==> How are you? <==', 'How' ];
+  it("should return final head data of the files with given specifications for characters", function () {
+    deepEqual(runHead('c', 3, [file1, file2], fs), expectedOutput1);
+  });
+
+  let file3 = "line1\nline2";
+  let file4 = "line1";
+  let expectedOutput2 = [ '==> line1\nline2 <==', 'line1\nline2', '\n==> line1 <==', 'line1' ];
+  it("should return final head data of the files with given specifications for lines", function () {
+    deepEqual(runHead('n', 2, [file3, file4], fs), expectedOutput2);
   });
 });

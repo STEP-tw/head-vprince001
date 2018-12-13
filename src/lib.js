@@ -136,7 +136,7 @@ const getFileData = function(data, length=10, type='n') {
 };
 
 module.exports = {
-  classifyDetails, getFileData, head,
+  classifyDetails, getFileData, head, runHead,
   addHeading, isFileExists, getHeadParameters,
   tail
 };
