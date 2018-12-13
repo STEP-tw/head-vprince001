@@ -58,8 +58,10 @@ const runTail = function(type, numberOfLines, fileNames, fs) {
       output.push( newLine + addHeading(fileNames[count]) );
     }
     newLine = "\n";
-
     let data = reverseData(readFile(fs, fileNames[count]));
+    if(!fileStatus) {
+      data = showFileNotFoundError(fileNames[count]);
+    }
 
     output.push(data);
     if(fileStatus){
@@ -114,6 +116,10 @@ const readFile = function(fs, fileName){
     return fs.readFileSync(fileName,'utf-8').trim();
   }
   return "head: "+ fileName +": No such file or directory";
+};
+
+const showFileNotFoundError = function(fileName) {
+  return "tail: "+ fileName +": No such file or directory";
 };
 
 const extractType = function(input) {
