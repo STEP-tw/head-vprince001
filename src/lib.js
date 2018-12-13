@@ -122,12 +122,6 @@ const showFileNotFoundError = function(fileName) {
   return "tail: "+ fileName +": No such file or directory";
 };
 
-const extractType = function(input) {
-  input = input.join('');
-  if(input.includes('-c')) { return 'c';}
-  return 'n';
-};
-
 const getFileData = function(data, length=10, type='n') {
   if(type == 'n') {
     return data.split('\n').slice(0,length).join('\n');
@@ -138,5 +132,5 @@ const getFileData = function(data, length=10, type='n') {
 module.exports = {
   classifyDetails, getFileData, head, runHead,
   addHeading, isFileExists, getHeadParameters,
-  tail
+  tail, runTail
 };

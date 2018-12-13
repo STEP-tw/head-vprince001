@@ -5,7 +5,8 @@ const {
   addHeading,
   isFileExists,
   getHeadParameters,
-  head, runHead
+  head, runHead,
+  tail, runTail
 } = require("../src/lib.js");
 
 describe("classifyDetails", () => {
@@ -177,7 +178,7 @@ describe("head", function () {
   });
 });
 
-//====================================================================================================
+//============================================ ========================================================
 
 describe("runHead", function () {
   let readFile = function(unicode,file) {
@@ -199,5 +200,53 @@ describe("runHead", function () {
   let expectedOutput2 = [ '==> line1\nline2 <==', 'line1\nline2', '\n==> line1 <==', 'line1' ];
   it("should return final head data of the files with given specifications for lines", function () {
     deepEqual(runHead('n', 2, [file3, file4], fs), expectedOutput2);
+  });
+});
+
+//====================================================================================================
+
+describe("tail", function () {
+  let readFile = function(unicode,file) {
+    return file;
+  }
+  let readFileSync = readFile.bind(null,'utf8');
+  let existsSync = file => true;
+  let fs = { readFileSync, existsSync };
+
+  it("should return tail of the file with given specifications for lines", function () {
+    let data = "This is the data\nwhich should be in a file\nUsed as a variable";
+    let userArgs = ["-n2", data];
+    deepEqual(tail(userArgs, fs), "which should be in a file\nUsed as a variable");
+  });
+
+  it("should return tail of the file with given specifications for characters", function () {
+    data = "This is the data";
+    userArgs = ["-c", "4", data];
+    deepEqual(tail(userArgs, fs), "data");
+  });
+});
+
+//============================================ ========================================================
+
+describe("runTail", function () {
+  let readFile = function(unicode,file) {
+    return file;
+  }
+  let readFileSync = readFile.bind(null,'utf8');
+  let existsSync = file => true;
+  let fs = { readFileSync, existsSync };
+
+  let file1 = "Hello";
+  let file2 = "How are you?";
+  let expectedOutput1 = [ '==> Hello <==', 'llo', '\n==> How are you? <==', 'ou?' ];
+  it("should return final tail data of the files with given specifications for characters", function () {
+    deepEqual(runTail('c', 3, [file1, file2], fs), expectedOutput1);
+  });
+
+  let file3 = "line1\nline2";
+  let file4 = "line1";
+  let expectedOutput2 = [ '==> line1\nline2 <==', 'line1\nline2', '\n==> line1 <==', 'line1' ];
+  it("should return final tail data of the files with given specifications for lines", function () {
+    deepEqual(runTail('n', 2, [file3, file4], fs), expectedOutput2);
   });
 });
