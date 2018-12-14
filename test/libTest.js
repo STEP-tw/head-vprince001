@@ -2,7 +2,7 @@ const { equal, deepEqual } = require("assert");
 
 const {
   head,
-  //getIllegalCountErrorHead,
+  getIllegalCountErrorHead,
   runHead,
   tail,
   runTail,
@@ -22,7 +22,7 @@ describe("head", function () {
   let readFileSync = readFile.bind(null,'utf8');
   let existsSync = file => true;
   let fs = { readFileSync, existsSync };
-  
+
   it("should return head of the file with given specifications for lines", function () {
     let data = "This is the data\nwhich should be in a file\nUsed as a variable";
     let userArgs = ["-n2", data];
@@ -46,20 +46,26 @@ describe("head", function () {
     let data = "This is the data\nwhich should be in a file";
     let errorMsg = "head: illegal byte count -- 0";
     let userArgs = ["-c0", data];
-    deepEqual(head(userArgs, fs), errorMsg);
+    equal(head(userArgs, fs), errorMsg);
   });
   
 });
 
 //=====================================================================================================
 
-//describe("getIllegalCountErrorHead", function() {
+describe("getIllegalCountErrorHead", function() {
   
-//  it("should return illegal line count error for n as type", function() {
-//    equal(getIllegalCountErrorHead("c"), "")
-//  });
+  it("should return illegal line count error when type is n and numberOfLines is less than 1", function () {
+    let errorMsg = "head: illegal line count -- 0";
+    deepEqual(getIllegalCountErrorHead("n", 0), errorMsg);
+  });
 
-//});
+  it("should return illegal byte count error when type is c and numberOfLines is less than 1", function () {
+    let errorMsg = "head: illegal byte count -- 0";
+    deepEqual(getIllegalCountErrorHead("c", 0), errorMsg);
+  });
+
+});
 
 //=====================================================================================================
 
@@ -107,6 +113,21 @@ describe("tail", function () {
     userArgs = ["-c", "4", data];
     deepEqual(tail(userArgs, fs), "data");
   });
+
+  it("should return illegal offset error when numberOfLines is NaN", function () {
+    let data = "This is the data\nwhich should be in a file";
+    let errorMsg = "tail: illegal offset -- p";
+    let userArgs = ["-np", data];
+    equal(tail(userArgs, fs), errorMsg);
+  });
+
+  it("should return empty string when numberOfLines is 0", function () {
+    let data = "This is the data\nwhich should be in a file";
+    let expectedOutput = "";
+    let userArgs = ["-n0", data];
+    equal(tail(userArgs, fs), expectedOutput);
+  });
+
 });
 
 //=====================================================================================================
