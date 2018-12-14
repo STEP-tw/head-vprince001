@@ -2,13 +2,17 @@ const head = function(usrInput, fs) {
   let {type, numberOfLines, fileNames} = classifyDetails(usrInput);
 
   if(numberOfLines < 1 || isNaN(numberOfLines)) {
-    let property = "line";
-    if(type == "c") { property = "byte"; };
-    return "head: illegal " + property + " count -- " + numberOfLines;
+    return getIllegalCountErrorHead(type, numberOfLines);    
   }
 
   let output = runHead(type, numberOfLines, fileNames, fs);
   return output.join('\n');
+};
+
+const getIllegalCountErrorHead = function(type, numberOfLines) {
+  let property = "line";
+    if(type == "c") { property = "byte"; };
+    return "head: illegal " + property + " count -- " + numberOfLines;
 };
 
 const runHead = function(type, numberOfLines, fileNames, fs) {
@@ -131,6 +135,7 @@ const getFileData = function(data, length=10, type='n') {
 
 module.exports = {
   head,
+  getIllegalCountErrorHead,
   runHead,
   tail,
   runTail,
