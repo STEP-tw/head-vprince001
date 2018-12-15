@@ -11,7 +11,8 @@ const {
   addHeading,
   isFileExists,
   getHeadParameters,
-  readFile
+  readFile,
+  showFileNotFoundError
 } = require("../src/lib.js");
 
 //====================================================================================================
@@ -25,13 +26,9 @@ describe("head", function() {
   let fs = { readFileSync, existsSync };
 
   it("should return head of the file with given specifications for lines", function() {
-    let data =
-      "This is the data\nwhich should be in a file\nUsed as a variable";
+    let data = "line1\nline2\nline3";
     let userArgs = ["-n2", data];
-    deepEqual(
-      head(userArgs, fs),
-      "This is the data\nwhich should be in a file"
-    );
+    deepEqual(head(userArgs, fs), "line1\nline2");
   });
 
   it("should return head of the file with given specifications for characters", function() {
@@ -79,36 +76,34 @@ describe("runHead", function() {
   const existsSync = file => true;
   let fs = { readFileSync, existsSync };
 
-  let file1 = "Hello\nWhat is your name?";
-  let file2 = "How are you?";
-  let expectedOutput1 = [
-    "==> Hello\nWhat is your name? <==",
-    "Hel",
-    "\n==> How are you? <==",
-    "How"
-  ];
   it("should return final head data of the files with given specifications for characters", function() {
-    deepEqual(runHead("c", 3, [file1, file2], fs), expectedOutput1);
+    let file1 = "line1\nline2";
+    let file2 = "line1";
+    let expectedOutput = [
+      "==> line1\nline2 <==",
+      "line1\n",
+      "\n==> line1 <==",
+      "line1"
+    ];
+    deepEqual(runHead("c", 6, [file1, file2], fs), expectedOutput);
   });
-
-  let file3 = "1";
-  let file4 = "1\n2";
-  let file5 = "1\n2\n3";
-  let expectedOutput2 = [
-    "==> 1 <==",
-    "1",
-    "\n==> 1\n2 <==",
-    "1\n2",
-    "\n==> 1\n2\n3 <==",
-    "1\n2"
-  ];
 
   it("should return final head data of the files with given specifications for lines", function() {
-    deepEqual(runHead("n", 2, [file3, file4, file5], fs), expectedOutput2);
-  });
-  
-});
+    let file1 = "1";
+    let file2 = "1\n2";
+    let file3 = "1\n2\n3";
+    let expectedOutput = [
+      "==> 1 <==",
+      "1",
+      "\n==> 1\n2 <==",
+      "1\n2",
+      "\n==> 1\n2\n3 <==",
+      "1\n2"
+    ];
 
+    deepEqual(runHead("n", 2, [file1, file2, file3], fs), expectedOutput);
+  });
+});
 
 //====================================================================================================
 
@@ -121,23 +116,20 @@ describe("tail", function() {
   let fs = { readFileSync, existsSync };
 
   it("should return tail of the file with given specifications for lines", function() {
-    let data =
-      "This is the data\nwhich should be in a file\nUsed as a variable";
+    let data = "line1\nline2\nline3";
     let userArgs = ["-n2", data];
-    deepEqual(
-      tail(userArgs, fs),
-      "which should be in a file\nUsed as a variable"
-    );
+    let expectedOutput = "line2\nline3";
+    deepEqual(tail(userArgs, fs), expectedOutput);
   });
 
   it("should return tail of the file with given specifications for characters", function() {
-    data = "This is the data";
-    userArgs = ["-c", "4", data];
+    let data = "This is the data";
+    let userArgs = ["-c", "4", data];
     deepEqual(tail(userArgs, fs), "data");
   });
 
   it("should return illegal offset error when numberOfLines is NaN", function() {
-    let data = "This is the data\nwhich should be in a file";
+    let data = "line1\nline2";
     let errorMsg = "tail: illegal offset -- p";
     let userArgs = ["-np", data];
     equal(tail(userArgs, fs), errorMsg);
@@ -161,28 +153,20 @@ describe("runTail", function() {
   let existsSync = file => true;
   let fs = { readFileSync, existsSync };
 
-  let file1 = "Hello";
-  let file2 = "How are you?";
-  let expectedOutput1 = [
-    "==> Hello <==",
-    "llo",
-    "\n==> How are you? <==",
-    "ou?"
-  ];
   it("should return final tail data of the files with given specifications for characters", function() {
-    deepEqual(runTail("c", 3, [file1, file2], fs), expectedOutput1);
+    let file1 = "line1";
+    let file2 = "line1\nline2";
+    let expectedOutput = [ "==> line1 <==", "ne1", "\n==> line1\nline2 <==", "ne2" ];
+
+    deepEqual(runTail("c", 3, [file1, file2], fs), expectedOutput);
   });
 
-  let file3 = "line1\nline2";
-  let file4 = "line1";
-  let expectedOutput2 = [
-    "==> line1\nline2 <==",
-    "line1\nline2",
-    "\n==> line1 <==",
-    "line1"
-  ];
   it("should return final tail data of the files with given specifications for lines", function() {
-    deepEqual(runTail("n", 2, [file3, file4], fs), expectedOutput2);
+    let file3 = "line1\nline2";
+    let file4 = "line1";
+    let expectedOutput = [ "==> line1\nline2 <==", "line1\nline2", "\n==> line1 <==", "line1" ];
+
+    deepEqual(runTail("n", 2, [file3, file4], fs), expectedOutput);
   });
 });
 
@@ -209,6 +193,7 @@ describe("reverseData", () => {
 //====================================================================================================
 
 describe("getHeadParameters", () => {
+
   it("should return an object of type, numberOfLines and fileNames for -n and one file name", () => {
     let input = ["-n1", "file.txt"];
     let expectedOutput = {
@@ -258,7 +243,6 @@ describe("getHeadParameters", () => {
     };
     deepEqual(getHeadParameters(input), expectedOutput);
   });
-
 
   it("should return an object of type, numberOfLines and fileNames -c1, and one file name", () => {
     let input = ["-c1", "file1.txt"];
@@ -329,11 +313,10 @@ describe("classifyDetails", () => {
     let expectedOutput = {
       type: "n",
       numberOfLines: 10,
-      fileNames: [ 'n', '5', "file1.txt" ]
+      fileNames: ["n", "5", "file1.txt"]
     };
-    deepEqual( classifyDetails( ["n", "5", "file1.txt"] ), expectedOutput );
+    deepEqual(classifyDetails(["n", "5", "file1.txt"]), expectedOutput);
   });
-
 });
 
 //====================================================================================================
@@ -375,18 +358,29 @@ describe("isFileExists", () => {
   it("should return false if file does not exist", () => {
     deepEqual(isFileExists(fsFalse, "file2"), false);
   });
-
 });
 
 //====================================================================================================
 
 describe("readFile", () => {
   let fileName = "file1";
-  let fs = {existsSync : function(fileName) {
-    return false;
-  }};
+  let fs = {
+    existsSync: function(fileName) {
+      return false;
+    }
+  };
 
   it("should return no such file found error if file doesn't exists", () => {
     equal(readFile(fs, "file1"), "head: file1: No such file or directory");
-  })
-})
+  });
+});
+
+//====================================================================================================
+
+describe("showFileNotFoundError", () => {
+  it("show return no such file or directory error", () => {
+    let expectedOutput = "tail: file1: No such file or directory";
+    equal(showFileNotFoundError("file1"), expectedOutput);
+  });
+  
+});

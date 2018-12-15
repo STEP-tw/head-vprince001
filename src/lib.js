@@ -143,5 +143,6 @@ module.exports = {
   addHeading,
   isFileExists,
   getHeadParameters,
-  readFile
+  readFile,
+  showFileNotFoundError
 };
