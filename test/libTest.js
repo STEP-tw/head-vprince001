@@ -374,4 +374,5 @@ describe("isFileExists", () => {
   it("should return false if file does not exist", () => {
     deepEqual(isFileExists(fsFalse, "file2"), false);
   });
+  
 });
