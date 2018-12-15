@@ -10,7 +10,8 @@ const {
   classifyDetails,
   addHeading,
   isFileExists,
-  getHeadParameters
+  getHeadParameters,
+  readFile
 } = require("../src/lib.js");
 
 //====================================================================================================
@@ -374,5 +375,18 @@ describe("isFileExists", () => {
   it("should return false if file does not exist", () => {
     deepEqual(isFileExists(fsFalse, "file2"), false);
   });
-  
+
 });
+
+//====================================================================================================
+
+describe("readFile", () => {
+  let fileName = "file1";
+  let fs = {existsSync : function(fileName) {
+    return false;
+  }};
+
+  it("should return no such file found error if file doesn't exists", () => {
+    equal(readFile(fs, "file1"), "head: file1: No such file or directory");
+  })
+})
