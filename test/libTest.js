@@ -162,12 +162,21 @@ describe("runTail", function() {
   });
 
   it("should return final tail data of the files with given specifications for lines", function() {
-    let file3 = "line1\nline2";
-    let file4 = "line1";
+    let file1 = "line1\nline2";
+    let file2 = "line1";
     let expectedOutput = [ "==> line1\nline2 <==", "line1\nline2", "\n==> line1 <==", "line1" ];
 
-    deepEqual(runTail("n", 2, [file3, file4], fs), expectedOutput);
+    deepEqual(runTail("n", 2, [file1, file2], fs), expectedOutput);
   });
+
+  it("show return no such file or directory error if file not found", () => {
+    let existsSync = file => false;
+    let fs = { existsSync };
+
+    let expectedOutput = "tail: file1: No such file or directory";
+    equal(runTail("n", 2, ["file1"], fs), expectedOutput);
+  });
+
 });
 
 //=====================================================================================================
@@ -382,5 +391,5 @@ describe("showFileNotFoundError", () => {
     let expectedOutput = "tail: file1: No such file or directory";
     equal(showFileNotFoundError("file1"), expectedOutput);
   });
-  
+
 });
