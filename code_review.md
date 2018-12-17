@@ -18,8 +18,8 @@ Good readme description
 - [x] main should not take any args
 
 ### tail.js 
-- [ ] line 7,8: unnecessary abbreviation
-- [ ] main should not take any args
+- [x] line 7,8: unnecessary abbreviation
+- [x] main should not take any args
 
 ### libTest 
 - [ ] line 25: misleading test
