@@ -22,12 +22,12 @@ line 7,8: unnecessary abbreviation
 main should not take any args
 
 ### libTest 
-line 25: misleading test,
+line 25: misleading test
 line 35: global variable
 line 36: global variable
-line 2053: it block messages should be explicit
-line 184199: it block messages should be explicit
-line 71106: it block messages should be explicit
+line 20, 53: it block messages should be explicit
+line 18, 41, 99: it block messages should be explicit
+line 71, 106: it block messages should be explicit
 line 57: should provide more test for getIllegalCountErrorHead
 line 71: fewer tests
 line 343: unnecessary test
