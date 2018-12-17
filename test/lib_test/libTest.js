@@ -17,39 +17,38 @@ const {
 
 //====================================================================================================
 
+const reader = function(unicode, file) {
+  return file;
+};
+const readFileSync = reader.bind(null, "utf8");
+const existsSync = file => true;
+const fs = { readFileSync, existsSync };
+
 describe("head", function() {
-  let readFile = function(unicode, file) {
-    return file;
-  };
-  let readFileSync = readFile.bind(null, "utf8");
-  let existsSync = file => true;
-  let fs = { readFileSync, existsSync };
+  const data = "line1\nline2\nline3";
 
   it("should return head of the file with given specifications for lines", function() {
-    let data = "line1\nline2\nline3";
     let userArgs = ["-n2", data];
     deepEqual(head(userArgs, fs), "line1\nline2");
   });
 
   it("should return head of the file with given specifications for characters", function() {
-    data = "This is the data";
-    userArgs = ["-c", "4", data];
-    deepEqual(head(userArgs, fs), "This");
+    let userArgs = ["-c", "4", data];
+    deepEqual(head(userArgs, fs), "line");
   });
 
   it("should return illegal line count error when type is n and numberOfLines is less than 1", function() {
-    let data = "This is the data\nwhich should be in a file";
     let errorMsg = "head: illegal line count -- 0";
     let userArgs = ["-n0", data];
     deepEqual(head(userArgs, fs), errorMsg);
   });
 
   it("should return illegal byte count error when type is c and numberOfLines is less than 1", function() {
-    let data = "This is the data\nwhich should be in a file";
     let errorMsg = "head: illegal byte count -- 0";
     let userArgs = ["-c0", data];
     equal(head(userArgs, fs), errorMsg);
   });
+
 });
 
 //=====================================================================================================
@@ -69,16 +68,11 @@ describe("getIllegalCountErrorHead", function() {
 //=====================================================================================================
 
 describe("runHead", function() {
-  let readFile = function(unicode, file) {
-    return file;
-  };
-  let readFileSync = readFile.bind(null, "utf8");
-  const existsSync = file => true;
-  let fs = { readFileSync, existsSync };
+    const file1 = "line1\nline2";
+    const file2 = "line1";
+    const file3 = "line1\nline2\nline3";
 
   it("should return final head data of the files with given specifications for characters", function() {
-    let file1 = "line1\nline2";
-    let file2 = "line1";
     let expectedOutput = [
       "==> line1\nline2 <==",
       "line1\n",
@@ -89,16 +83,13 @@ describe("runHead", function() {
   });
 
   it("should return final head data of the files with given specifications for lines", function() {
-    let file1 = "1";
-    let file2 = "1\n2";
-    let file3 = "1\n2\n3";
     let expectedOutput = [
-      "==> 1 <==",
-      "1",
-      "\n==> 1\n2 <==",
-      "1\n2",
-      "\n==> 1\n2\n3 <==",
-      "1\n2"
+      "==> line1\nline2 <==",
+      "line1\nline2",
+      "\n==> line1 <==",
+      "line1",
+      "\n==> line1\nline2\nline3 <==",
+      "line1\nline2"
     ];
 
     deepEqual(runHead("n", 2, [file1, file2, file3], fs), expectedOutput);
@@ -108,35 +99,26 @@ describe("runHead", function() {
 //====================================================================================================
 
 describe("tail", function() {
-  let readFile = function(unicode, file) {
-    return file;
-  };
-  let readFileSync = readFile.bind(null, "utf8");
-  let existsSync = file => true;
-  let fs = { readFileSync, existsSync };
+  const data = "line1\nline2\nline3";
 
   it("should return tail of the file with given specifications for lines", function() {
-    let data = "line1\nline2\nline3";
     let userArgs = ["-n2", data];
     let expectedOutput = "line2\nline3";
     deepEqual(tail(userArgs, fs), expectedOutput);
   });
 
   it("should return tail of the file with given specifications for characters", function() {
-    let data = "This is the data";
-    let userArgs = ["-c", "4", data];
-    deepEqual(tail(userArgs, fs), "data");
+    let userArgs = ["-c", "7", data];
+    deepEqual(tail(userArgs, fs), "2\nline3");
   });
 
   it("should return illegal offset error when numberOfLines is NaN", function() {
-    let data = "line1\nline2";
     let errorMsg = "tail: illegal offset -- p";
     let userArgs = ["-np", data];
     equal(tail(userArgs, fs), errorMsg);
   });
 
   it("should return empty string when numberOfLines is 0", function() {
-    let data = "This is the data\nwhich should be in a file";
     let expectedOutput = "";
     let userArgs = ["-n0", data];
     equal(tail(userArgs, fs), expectedOutput);
@@ -146,27 +128,20 @@ describe("tail", function() {
 //=====================================================================================================
 
 describe("runTail", function() {
-  let readFile = function(unicode, file) {
-    return file;
-  };
-  let readFileSync = readFile.bind(null, "utf8");
-  let existsSync = file => true;
-  let fs = { readFileSync, existsSync };
+  const file1 = "line1";
+  const file2 = "line1\nline2";
+  const file3 = "line1\nline2\nline3"
 
   it("should return final tail data of the files with given specifications for characters", function() {
-    let file1 = "line1";
-    let file2 = "line1\nline2";
     let expectedOutput = [ "==> line1 <==", "ne1", "\n==> line1\nline2 <==", "ne2" ];
 
     deepEqual(runTail("c", 3, [file1, file2], fs), expectedOutput);
   });
 
   it("should return final tail data of the files with given specifications for lines", function() {
-    let file1 = "line1\nline2";
-    let file2 = "line1";
-    let expectedOutput = [ "==> line1\nline2 <==", "line1\nline2", "\n==> line1 <==", "line1" ];
+    let expectedOutput = [ "==> line1 <==", "line1", "\n==> line1\nline2 <==", "line1\nline2", "\n==> line1\nline2\nline3 <==", "line2\nline3" ];
 
-    deepEqual(runTail("n", 2, [file1, file2], fs), expectedOutput);
+    deepEqual(runTail("n", 2, [file1, file2, file3], fs), expectedOutput);
   });
 
   it("show return no such file or directory error if file not found", () => {
