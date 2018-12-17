@@ -14,8 +14,8 @@ Good readme description
 - [x] should add more files/locations
 
 ### head.js 
-- [ ] line 7,8: unnecessary abbreviation
-- [ ] main should not take any args
+- [x] line 7,8: unnecessary abbreviation
+- [x] main should not take any args
 
 ### tail.js 
 - [ ] line 7,8: unnecessary abbreviation

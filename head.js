@@ -1,11 +1,10 @@
-const {
-  head
-} = require("./src/lib.js");
+const { head } = require("./src/lib/lib.js");
 
 const fs = require("fs");
 
-const main = function(usrInput, readFile) {
-  console.log(head(usrInput, readFile));
+const main = function() {
+  let userInput = process.argv.slice(2);
+  console.log(head(userInput, fs));
 };
 
-main(process.argv.slice(2), fs);
+main();
