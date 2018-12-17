@@ -48,13 +48,11 @@ describe("head", function() {
     let userArgs = ["-c0", data];
     equal(head(userArgs, fs), errorMsg);
   });
-
 });
 
 //=====================================================================================================
 
 describe("getIllegalCountErrorHead", function() {
-
   it("should return illegal line count error msg for n and 0 as input", function() {
     let errorMsg = "head: illegal line count -- 0";
     deepEqual(getIllegalCountErrorHead("n", 0), errorMsg);
@@ -74,22 +72,34 @@ describe("getIllegalCountErrorHead", function() {
     let errorMsg = "head: illegal byte count -- -2";
     deepEqual(getIllegalCountErrorHead("c", -2), errorMsg);
   });
-  
+
   it("should return illegal byte count error msg for p and number less than 1 as input", function() {
     let errorMsg = "head: illegal line count -- -1";
     deepEqual(getIllegalCountErrorHead("p", -1), errorMsg);
   });
-
 });
 
 //=====================================================================================================
 
 describe("runHead", function() {
-    const file1 = "line1\nline2";
-    const file2 = "line1";
-    const file3 = "line1\nline2\nline3";
+  const file1 = "line1\nline2";
+  const file2 = "line1";
 
-  it("should return first 6 characters of files with headings for c, 6 and 2 files as input", function() {
+  it("should return first 8 characters of file without heading for c, 8 and 1 file as input", function() {
+    let expectedOutput = [
+      "line1\nli",
+    ];
+    deepEqual(runHead("c", 8, [file1], fs), expectedOutput);
+  });
+
+  it("should return all data for c, number of chars more than all file chars and 1 file as input", function() {
+    let expectedOutput = [
+      "line1\nline2",
+    ];
+    deepEqual(runHead("c", 15, [file1], fs), expectedOutput);
+  });
+
+  it("should return first 6 characters of files with headings for c, 6 and multiple files as input", function() {
     let expectedOutput = [
       "==> line1\nline2 <==",
       "line1\n",
@@ -99,25 +109,36 @@ describe("runHead", function() {
     deepEqual(runHead("c", 6, [file1, file2], fs), expectedOutput);
   });
 
-  it("should return first 2 lines of files with headings for n, 2 and 3 files as input", function() {
+  it("should return first line of file without heading for n, 1 and 1 file as input", function() {
+    let expectedOutput = [
+      "line1"
+    ];
+    deepEqual(runHead("n", 1, [file1], fs), expectedOutput);
+  });
+
+  it("should return all data for n, number of lines more than all file lines and 1 file as input", function() {
+    let expectedOutput = [
+      "line1\nline2",
+    ];
+
+    deepEqual(runHead("n", 3, [file1], fs), expectedOutput);
+  });
+
+  it("should return first 2 lines of files with headings for n, 2 and multiple files as input", function() {
     let expectedOutput = [
       "==> line1\nline2 <==",
       "line1\nline2",
       "\n==> line1 <==",
-      "line1",
-      "\n==> line1\nline2\nline3 <==",
-      "line1\nline2"
+      "line1"
     ];
 
-    deepEqual(runHead("n", 2, [file1, file2, file3], fs), expectedOutput);
+    deepEqual(runHead("n", 2, [file1, file2], fs), expectedOutput);
   });
-
 });
 
 //====================================================================================================
 
 describe("tail", function() {
-
   const data = "line1\nline2\nline3";
 
   it("should return last 2 lines of file for -n2 and file as input", function() {
@@ -142,25 +163,35 @@ describe("tail", function() {
     let userArgs = ["-n0", data];
     equal(tail(userArgs, fs), expectedOutput);
   });
-
 });
 
 //=====================================================================================================
 
 describe("runTail", function() {
-
   const file1 = "line1";
   const file2 = "line1\nline2";
-  const file3 = "line1\nline2\nline3"
+  const file3 = "line1\nline2\nline3";
 
   it("should return last 3 characters of files with headings for c, 3 and 2 files as input", function() {
-    let expectedOutput = [ "==> line1 <==", "ne1", "\n==> line1\nline2 <==", "ne2" ];
+    let expectedOutput = [
+      "==> line1 <==",
+      "ne1",
+      "\n==> line1\nline2 <==",
+      "ne2"
+    ];
 
     deepEqual(runTail("c", 3, [file1, file2], fs), expectedOutput);
   });
 
   it("should return last 2 lines of files with headings for n, 2 and 3 files as input", function() {
-    let expectedOutput = [ "==> line1 <==", "line1", "\n==> line1\nline2 <==", "line1\nline2", "\n==> line1\nline2\nline3 <==", "line2\nline3" ];
+    let expectedOutput = [
+      "==> line1 <==",
+      "line1",
+      "\n==> line1\nline2 <==",
+      "line1\nline2",
+      "\n==> line1\nline2\nline3 <==",
+      "line2\nline3"
+    ];
 
     deepEqual(runTail("n", 2, [file1, file2, file3], fs), expectedOutput);
   });
@@ -172,13 +203,11 @@ describe("runTail", function() {
     let expectedOutput = "tail: file1: No such file or directory";
     equal(runTail("n", 2, ["file1"], fs), expectedOutput);
   });
-
 });
 
 //=====================================================================================================
 
 describe("reverseData", () => {
-
   it("should return empty string for empty string", () => {
     equal(reverseData(""), "");
   });
@@ -190,13 +219,11 @@ describe("reverseData", () => {
   it("should return reverse string for strings with spaces as input", () => {
     equal(reverseData("two words"), "sdrow owt");
   });
-
 });
 
 //====================================================================================================
 
 describe("getHeadParameters", () => {
-
   it("should return type, numberOfLines and fileNames in an object for -n1 and file as input", () => {
     let input = ["-n1", "file.txt"];
     let expectedOutput = {
@@ -286,13 +313,11 @@ describe("getHeadParameters", () => {
     };
     deepEqual(getHeadParameters(input), expectedOutput);
   });
-
 });
 
 //=====================================================================================================
 
 describe("classifyDetails", () => {
-
   it("should return type, numberOfLines and fileNames in an object for -n, 5 and file as input", () => {
     let expectedOutput = {
       type: "n",
@@ -334,13 +359,11 @@ describe("classifyDetails", () => {
     };
     deepEqual(classifyDetails(["n", "5", "file1.txt"]), expectedOutput);
   });
-
 });
 
 //====================================================================================================
 
 describe("addHeading", function() {
-
   it("should return file name with side arrows for given file name", function() {
     equal(addHeading("lib.js"), "==> lib.js <==");
   });
@@ -352,7 +375,6 @@ describe("addHeading", function() {
   it("should return undefined with side arrows for no input", function() {
     equal(addHeading(), "==> undefined <==");
   });
-
 });
 
 //====================================================================================================
@@ -377,13 +399,11 @@ describe("isFileExists", () => {
   it("should return false if file does not exist", () => {
     deepEqual(isFileExists(fsFalse, "file2"), false);
   });
-
 });
 
 //====================================================================================================
 
 describe("readFile", () => {
-
   let fileName = "file1";
   let fs = {
     existsSync: function(fileName) {
@@ -394,16 +414,13 @@ describe("readFile", () => {
   it("should return no such file found head error for non existing file", () => {
     equal(readFile(fs, "file1"), "head: file1: No such file or directory");
   });
-
 });
 
 //====================================================================================================
 
 describe("showFileNotFoundError", () => {
-
   it("should return no such file found tail error for non existing file", () => {
     let expectedOutput = "tail: file1: No such file or directory";
     equal(showFileNotFoundError("file1"), expectedOutput);
   });
-
 });

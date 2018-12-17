@@ -26,10 +26,10 @@ Good readme description
 - [x] line 35: global variable
 - [x] line 36: global variable
 - [x] line 20, 53: it block messages should be explicit
-- [x] line 18, 41, 99: it block messages should be explicit
+- [x] line 184, 199: it block messages should be explicit
 - [x] line 71, 106: it block messages should be explicit
 - [x] line 57: should provide more test for getIllegalCountErrorHead
-- [ ] line 71: fewer tests
+- [x] line 71: fewer tests
 - [ ] line 343: unnecessary test
 - [ ] line 374: more tests for readFile
 - [ ] line 389: fewer tests for showFileNotFoundError
