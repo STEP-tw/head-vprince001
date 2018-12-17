@@ -13,7 +13,7 @@ const {
   getHeadParameters,
   readFile,
   showFileNotFoundError
-} = require("../src/lib.js");
+} = require("../../src/lib/lib.js");
 
 //====================================================================================================
 

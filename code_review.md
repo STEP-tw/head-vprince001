@@ -4,14 +4,14 @@
 - [x] test/libTest.js
 
 ### git 
-- [ ] fewer commits
-- [ ] commits messages could be better
+fewer commits
+commits messages could be better
 
 ### readme
 Good readme description
 
 ### .gitignore 
-- [ ] should add more files/locations
+- [x] should add more files/locations
 
 ### head.js 
 - [ ] line 7,8: unnecessary abbreviation
@@ -49,7 +49,7 @@ Good readme description
 - [ ] line 90, 81: function dublication
 - [ ] line 93: misleading name  noOfLines, why lines why not characters?
 - [ ] run tail function hard to understand, simple logic could be applied
-- [ ] run tail   should not read in reverse
+- [ ] run tail should not read in reverse
 - [ ] line 123: showFileNotFoundError  nameing should be specific
 - [ ] line 14: unnecessary semicolon
 - [ ] line 118: why triming blank lines? will not work for files with blank lines
