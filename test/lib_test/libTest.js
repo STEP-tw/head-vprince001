@@ -60,11 +60,26 @@ describe("getIllegalCountErrorHead", function() {
     deepEqual(getIllegalCountErrorHead("n", 0), errorMsg);
   });
 
+  it("should return illegal line count error msg for n and -5 as input", function() {
+    let errorMsg = "head: illegal line count -- -5";
+    deepEqual(getIllegalCountErrorHead("n", -5), errorMsg);
+  });
+
   it("should return illegal byte count error msg for c and 0 as input", function() {
     let errorMsg = "head: illegal byte count -- 0";
     deepEqual(getIllegalCountErrorHead("c", 0), errorMsg);
   });
+
+  it("should return illegal byte count error msg for c and -2 as input", function() {
+    let errorMsg = "head: illegal byte count -- -2";
+    deepEqual(getIllegalCountErrorHead("c", -2), errorMsg);
+  });
   
+  it("should return illegal byte count error msg for p and number less than 1 as input", function() {
+    let errorMsg = "head: illegal line count -- -1";
+    deepEqual(getIllegalCountErrorHead("p", -1), errorMsg);
+  });
+
 });
 
 //=====================================================================================================

@@ -2,6 +2,7 @@ const head = function(usrInput, fs) {
   let {type, numberOfLines, fileNames} = classifyDetails(usrInput);
 
   if(numberOfLines < 1 || isNaN(numberOfLines)) {
+    console.log("dfa");
     return getIllegalCountErrorHead(type, numberOfLines);    
   }
 
@@ -11,8 +12,8 @@ const head = function(usrInput, fs) {
 
 const getIllegalCountErrorHead = function(type, numberOfLines) {
   let property = "line";
-    if(type == "c") { property = "byte"; };
-    return "head: illegal " + property + " count -- " + numberOfLines;
+  if(type == "c") { property = "byte"; };
+  return "head: illegal " + property + " count -- " + numberOfLines;
 };
 
 const runHead = function(type, numberOfLines, fileNames, fs) {
