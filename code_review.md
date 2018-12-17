@@ -25,9 +25,9 @@ Good readme description
 - [ ] line 25: misleading test
 - [x] line 35: global variable
 - [x] line 36: global variable
-- [ ] line 20, 53: it block messages should be explicit
-- [ ] line 18, 41, 99: it block messages should be explicit
-- [ ] line 71, 106: it block messages should be explicit
+- [x] line 20, 53: it block messages should be explicit
+- [x] line 18, 41, 99: it block messages should be explicit
+- [x] line 71, 106: it block messages should be explicit
 - [ ] line 57: should provide more test for getIllegalCountErrorHead
 - [ ] line 71: fewer tests
 - [ ] line 343: unnecessary test
