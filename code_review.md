@@ -44,7 +44,7 @@ should have seperate functions for generating error messages
 line 12: function name can be better, function name is misleading
 line 18: misleading name
 line 52: misleading name
-function dublication could be avoided for runHead, runTail
+function duplication could be avoided for runHead, runTail
 line 77: poor function naming, reverseData should is reversing string only
 line 90, 81: function dublication
 line 93: misleading name  noOfLines, why lines why not characters?
