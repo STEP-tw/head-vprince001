@@ -1,20 +1,29 @@
-const head = function(usrInput, fs) {
-  let { type, numberOfLines, fileNames } = classifyDetails(usrInput);
-
-  if (numberOfLines < 1 || isNaN(numberOfLines)) {
-    return getIllegalCountErrorHead(type, numberOfLines);
+const getFileData = function(data, length = 10, type = "n") {
+  if (type == "n") {
+    return data
+      .split("\n")
+      .slice(0, length)
+      .join("\n");
   }
-
-  let output = runHead(type, numberOfLines, fileNames, fs);
-  return output.join("\n");
+  return data
+    .split("")
+    .slice(0, length)
+    .join("");
 };
 
-const getIllegalCountErrorHead = function(type, numberOfLines) {
-  let property = "line";
-  if (type == "c") {
-    property = "byte";
+const readFile = function(fs, fileName) {
+  if (isFileExists(fs, fileName)) {
+    return fs.readFileSync(fileName, "utf-8").trim();
   }
-  return "head: illegal " + property + " count -- " + numberOfLines;
+  return "head: " + fileName + ": No such file or directory";
+};
+
+const addHeading = function(head) {
+  return "==> " + head + " <==";
+};
+
+const isFileExists = function(fs, fileName) {
+  return fs.existsSync(fileName);
 };
 
 const runHead = function(type, numberOfLines, fileNames, fs) {
@@ -39,16 +48,69 @@ const runHead = function(type, numberOfLines, fileNames, fs) {
   return output;
 };
 
-const tail = function(usrInput, fs) {
-  let { type, numberOfLines, fileNames } = classifyDetails(usrInput);
+const getIllegalCountErrorHead = function(type, numberOfLines) {
+  let property = "line";
+  if (type == "c") {
+    property = "byte";
+  }
+  return "head: illegal " + property + " count -- " + numberOfLines;
+};
 
-  if (isNaN(numberOfLines)) {
-    return "tail: illegal offset -- " + numberOfLines;
+const getHeadParameters = function(headParameters) {
+  if (headParameters[0] == "-n" || headParameters[0] == "-c") {
+    return {
+      type: headParameters[0][1],
+      numberOfLines: headParameters[1],
+      fileNames: headParameters.slice(2)
+    };
   }
 
-  numberOfLines = Math.abs(numberOfLines);
-  let output = runTail(type, numberOfLines, fileNames, fs);
+  if (!isNaN(Math.abs(headParameters[0]))) {
+    return {
+      type: "n",
+      numberOfLines: Math.abs(headParameters[0]),
+      fileNames: headParameters.slice(1)
+    };
+  }
+
+  return {
+    type: headParameters[0][1],
+    numberOfLines: headParameters[0].slice(2),
+    fileNames: headParameters.slice(1)
+  };
+};
+
+const classifyDetails = function(usrInput) {
+  if (usrInput[0][0] == "-") {
+    return getHeadParameters(usrInput);
+  }
+  return {
+    type: "n",
+    numberOfLines: 10,
+    fileNames: usrInput
+  };
+};
+
+const head = function(usrInput, fs) {
+  let { type, numberOfLines, fileNames } = classifyDetails(usrInput);
+
+  if (numberOfLines < 1 || isNaN(numberOfLines)) {
+    return getIllegalCountErrorHead(type, numberOfLines);
+  }
+
+  let output = runHead(type, numberOfLines, fileNames, fs);
   return output.join("\n");
+};
+
+const showFileNotFoundError = function(fileName) {
+  return "tail: " + fileName + ": No such file or directory";
+};
+
+const reverseData = function(data) {
+  return data
+    .split("")
+    .reverse()
+    .join("");
 };
 
 const runTail = function(type, numberOfLines, fileNames, fs) {
@@ -76,92 +138,30 @@ const runTail = function(type, numberOfLines, fileNames, fs) {
   return output;
 };
 
-const reverseData = function(data) {
-  return data
-    .split("")
-    .reverse()
-    .join("");
-};
+const tail = function(usrInput, fs) {
+  let { type, numberOfLines, fileNames } = classifyDetails(usrInput);
 
-const classifyDetails = function(usrInput) {
-  if (usrInput[0][0] == "-") {
-    return getHeadParameters(usrInput);
-  }
-  return {
-    type: "n",
-    numberOfLines: 10,
-    fileNames: usrInput
-  };
-};
-
-const getHeadParameters = function(headParameters) {
-  if (headParameters[0] == "-n" || headParameters[0] == "-c") {
-    return {
-      type: headParameters[0][1],
-      numberOfLines: headParameters[1],
-      fileNames: headParameters.slice(2)
-    };
+  if (isNaN(numberOfLines)) {
+    return "tail: illegal offset -- " + numberOfLines;
   }
 
-  if (!isNaN(Math.abs(headParameters[0]))) {
-    return {
-      type: "n",
-      numberOfLines: Math.abs(headParameters[0]),
-      fileNames: headParameters.slice(1)
-    };
-  }
-
-  return {
-    type: headParameters[0][1],
-    numberOfLines: headParameters[0].slice(2),
-    fileNames: headParameters.slice(1)
-  };
-};
-
-const isFileExists = function(fs, fileName) {
-  return fs.existsSync(fileName);
-};
-
-const addHeading = function(head) {
-  return "==> " + head + " <==";
-};
-
-const readFile = function(fs, fileName) {
-  if (isFileExists(fs, fileName)) {
-    return fs.readFileSync(fileName, "utf-8").trim();
-  }
-  return "head: " + fileName + ": No such file or directory";
-};
-
-const showFileNotFoundError = function(fileName) {
-  return "tail: " + fileName + ": No such file or directory";
-};
-
-const getFileData = function(data, length = 10, type = "n") {
-  if (type == "n") {
-    return data
-      .split("\n")
-      .slice(0, length)
-      .join("\n");
-  }
-  return data
-    .split("")
-    .slice(0, length)
-    .join("");
+  numberOfLines = Math.abs(numberOfLines);
+  let output = runTail(type, numberOfLines, fileNames, fs);
+  return output.join("\n");
 };
 
 module.exports = {
-  head,
-  getIllegalCountErrorHead,
-  runHead,
-  tail,
-  runTail,
-  reverseData,
-  classifyDetails,
   getFileData,
+  readFile,
   addHeading,
   isFileExists,
+  runHead,
+  getIllegalCountErrorHead,
   getHeadParameters,
-  readFile,
-  showFileNotFoundError
+  classifyDetails,
+  head,
+  showFileNotFoundError,
+  reverseData,
+  runTail,
+  tail
 };
