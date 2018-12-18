@@ -1,9 +1,6 @@
 const { equal, deepEqual } = require("assert");
 
 const {
-  readFile,
-  addHeading,
-  isFileExists,
   runHead,
   getIllegalCountErrorHead,
   getHeadParameters,
@@ -21,55 +18,6 @@ const reader = function(unicode, file) {
 const readFileSync = reader.bind(null, "utf8");
 const existsSync = file => true;
 const fs = { readFileSync, existsSync };
-
-//====================================================================================================
-
-describe("readFile", () => {
-  it("should return trimmed file data for existing file", () => {
-    equal(readFile(fs, "file1"), "file1");
-  });
-
-  it("should return no such file found head error for non existing file", () => {
-    fs.existsSync = file => false;
-    equal(readFile(fs, "file2"), "head: file2: No such file or directory");
-  });
-});
-
-//====================================================================================================
-
-describe("addHeading", function() {
-  it("should return file name with side arrows for given file name", function() {
-    equal(addHeading("lib.js"), "==> lib.js <==");
-  });
-
-  it("should return side arrows with space in between for empty string", function() {
-    equal(addHeading(""), "==>  <==");
-  });
-});
-
-//====================================================================================================
-
-describe("isFileExists", () => {
-  let fsTrue = {
-    existsSync: file => {
-      return true;
-    }
-  };
-
-  it("should return true if file exists", () => {
-    deepEqual(isFileExists(fsTrue, "file1"), true);
-  });
-
-  let fsFalse = {
-    existsSync: file => {
-      return false;
-    }
-  };
-
-  it("should return false if file does not exist", () => {
-    deepEqual(isFileExists(fsFalse, "file2"), false);
-  });
-});
 
 //=====================================================================================================
 

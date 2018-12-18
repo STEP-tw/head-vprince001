@@ -36,8 +36,8 @@ Good readme description
 
 ### lib.js 
 - [x] run prettier
-- [ ] should structure functions better
-- [ ] utility functions should be in different library
+- [x] should structure functions better
+- [x] utility functions should be in different library
 - [ ] error message genrerating functions should be in different library
 - [ ] functions are called before they are defined
 - [ ] should have seperate functions for generating error messages
