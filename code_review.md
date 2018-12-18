@@ -32,10 +32,10 @@ Good readme description
 - [x] line 71: fewer tests
 - [x] line 343: unnecessary test
 - [x] line 374: more tests for readFile
-- [ ] line 389: fewer tests for showFileNotFoundError
+- [ ] ~~line 389: fewer tests for showFileNotFoundError~~
 
 ### lib.js 
-- [ ] run prettier
+- [x] run prettier
 - [ ] should structure functions better
 - [ ] utility functions should be in different library
 - [ ] error message genrerating functions should be in different library

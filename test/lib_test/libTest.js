@@ -86,16 +86,12 @@ describe("runHead", function() {
   const file2 = "line1";
 
   it("should return first 8 characters of file without heading for c, 8 and 1 file as input", function() {
-    let expectedOutput = [
-      "line1\nli",
-    ];
+    let expectedOutput = ["line1\nli"];
     deepEqual(runHead("c", 8, [file1], fs), expectedOutput);
   });
 
   it("should return all data for c, number of chars more than all file chars and 1 file as input", function() {
-    let expectedOutput = [
-      "line1\nline2",
-    ];
+    let expectedOutput = ["line1\nline2"];
     deepEqual(runHead("c", 15, [file1], fs), expectedOutput);
   });
 
@@ -110,16 +106,12 @@ describe("runHead", function() {
   });
 
   it("should return first line of file without heading for n, 1 and 1 file as input", function() {
-    let expectedOutput = [
-      "line1"
-    ];
+    let expectedOutput = ["line1"];
     deepEqual(runHead("n", 1, [file1], fs), expectedOutput);
   });
 
   it("should return all data for n, number of lines more than all file lines and 1 file as input", function() {
-    let expectedOutput = [
-      "line1\nline2",
-    ];
+    let expectedOutput = ["line1\nline2"];
 
     deepEqual(runHead("n", 3, [file1], fs), expectedOutput);
   });
