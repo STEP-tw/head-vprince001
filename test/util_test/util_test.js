@@ -71,15 +71,15 @@ describe("readFile", () => {
 
 describe("reverseData", () => {
   it("should return empty string for empty string", () => {
-    equal(reverseData(""), "");
+    assert.equal(reverseData(""), "");
   });
 
   it("should return reverse string for strings without spaces as input", () => {
-    equal(reverseData("Something"), "gnihtemoS");
+    assert.equal(reverseData("Something"), "gnihtemoS");
   });
 
   it("should return reverse string for strings with spaces as input", () => {
-    equal(reverseData("two words"), "sdrow owt");
+    assert.equal(reverseData("two words"), "sdrow owt");
   });
 });
 
@@ -88,6 +88,6 @@ describe("reverseData", () => {
 describe("showFileNotFoundError", () => {
   it("should return no such file found tail error for non existing file", () => {
     let expectedOutput = "tail: file1: No such file or directory";
-    equal(showFileNotFoundError("file1"), expectedOutput);
+    assert.equal(showFileNotFoundError("file1"), expectedOutput);
   });
 });
