@@ -20,14 +20,9 @@ const reverseData = function(data) {
     .join("");
 };
 
-const showFileNotFoundError = function(fileName) {
-  return "tail: " + fileName + ": No such file or directory";
-};
-
 module.exports = {
   isFileExists,
   addHeading,
   readFile,
-  reverseData,
-  showFileNotFoundError
+  reverseData
 };

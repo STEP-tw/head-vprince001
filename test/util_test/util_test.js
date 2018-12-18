@@ -4,8 +4,7 @@ const {
   isFileExists,
   addHeading,
   readFile,
-  reverseData,
-  showFileNotFoundError
+  reverseData
 } = require("../../src/util_lib/util.js");
 
 const reader = function(unicode, file) {
@@ -80,14 +79,5 @@ describe("reverseData", () => {
 
   it("should return reverse string for strings with spaces as input", () => {
     assert.equal(reverseData("two words"), "sdrow owt");
-  });
-});
-
-//====================================================================================================
-
-describe("showFileNotFoundError", () => {
-  it("should return no such file found tail error for non existing file", () => {
-    let expectedOutput = "tail: file1: No such file or directory";
-    assert.equal(showFileNotFoundError("file1"), expectedOutput);
   });
 });

@@ -4,7 +4,6 @@ const {
   runTail,
   tail,
   runHead,
-  getIllegalCountErrorHead,
   getHeadParameters,
   classifyDetails,
   head
@@ -135,35 +134,6 @@ describe("runHead", function() {
     ];
 
     assert.deepEqual(runHead("n", 2, [file1, file2], fs), expectedOutput);
-  });
-});
-
-//=====================================================================================================
-
-describe("getIllegalCountErrorHead", function() {
-  it("should return illegal line count error msg for n and 0 as input", function() {
-    let errorMsg = "head: illegal line count -- 0";
-    assert.deepEqual(getIllegalCountErrorHead("n", 0), errorMsg);
-  });
-
-  it("should return illegal line count error msg for n and -5 as input", function() {
-    let errorMsg = "head: illegal line count -- -5";
-    assert.deepEqual(getIllegalCountErrorHead("n", -5), errorMsg);
-  });
-
-  it("should return illegal byte count error msg for c and 0 as input", function() {
-    let errorMsg = "head: illegal byte count -- 0";
-    assert.deepEqual(getIllegalCountErrorHead("c", 0), errorMsg);
-  });
-
-  it("should return illegal byte count error msg for c and -2 as input", function() {
-    let errorMsg = "head: illegal byte count -- -2";
-    assert.deepEqual(getIllegalCountErrorHead("c", -2), errorMsg);
-  });
-
-  it("should return illegal byte count error msg for p and number less than 1 as input", function() {
-    let errorMsg = "head: illegal line count -- -1";
-    assert.deepEqual(getIllegalCountErrorHead("p", -1), errorMsg);
   });
 });
 

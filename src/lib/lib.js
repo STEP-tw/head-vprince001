@@ -2,9 +2,14 @@ const {
   readFile,
   addHeading,
   isFileExists,
-  reverseData,
-  showFileNotFoundError
+  reverseData
 } = require("../util_lib/util.js");
+
+const {
+  getTailIllegalOffsetMsg,
+  getHeadIllegalCountMsg,
+  getTailNoFileErrorMsg
+} = require("./error_handler.js");
 
 const runTail = function(type, numberOfLines, fileNames, fs) {
   let output = [];
@@ -19,7 +24,7 @@ const runTail = function(type, numberOfLines, fileNames, fs) {
     newLine = "\n";
     let data = reverseData(readFile(fs, fileNames[count]));
     if (!fileStatus) {
-      data = showFileNotFoundError(fileNames[count]);
+      data = getTailNoFileErrorMsg(fileNames[count]);
     }
 
     output.push(data);
@@ -35,7 +40,7 @@ const tail = function(usrInput, fs) {
   let { type, numberOfLines, fileNames } = classifyDetails(usrInput);
 
   if (isNaN(numberOfLines)) {
-    return "tail: illegal offset -- " + numberOfLines;
+    return getTailIllegalOffsetMsg(numberOfLines);
   }
 
   numberOfLines = Math.abs(numberOfLines);
@@ -78,14 +83,6 @@ const runHead = function(type, numberOfLines, fileNames, fs) {
   return output;
 };
 
-const getIllegalCountErrorHead = function(type, numberOfLines) {
-  let property = "line";
-  if (type == "c") {
-    property = "byte";
-  }
-  return "head: illegal " + property + " count -- " + numberOfLines;
-};
-
 const getHeadParameters = function(headParameters) {
   if (headParameters[0] == "-n" || headParameters[0] == "-c") {
     return {
@@ -125,7 +122,7 @@ const head = function(usrInput, fs) {
   let { type, numberOfLines, fileNames } = classifyDetails(usrInput);
 
   if (numberOfLines < 1 || isNaN(numberOfLines)) {
-    return getIllegalCountErrorHead(type, numberOfLines);
+    return getHeadIllegalCountMsg(type, numberOfLines);
   }
 
   let output = runHead(type, numberOfLines, fileNames, fs);
@@ -137,7 +134,6 @@ module.exports = {
   tail,
   getFileData,
   runHead,
-  getIllegalCountErrorHead,
   getHeadParameters,
   classifyDetails,
   head

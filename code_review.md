@@ -38,9 +38,9 @@ Good readme description
 - [x] run prettier
 - [x] should structure functions better
 - [x] utility functions should be in different library
-- [ ] error message genrerating functions should be in different library
-- [ ] functions are called before they are defined
-- [ ] should have seperate functions for generating error messages
+- [x] error message genrerating functions should be in different library
+- [x] functions are called before they are defined
+- [x] should have seperate functions for generating error messages
 - [ ] line 12: function name can be better, function name is misleading
 - [ ] line 18: misleading name
 - [ ] line 52: misleading name
