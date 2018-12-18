@@ -30,7 +30,7 @@ Good readme description
 - [x] line 71, 106: it block messages should be explicit
 - [x] line 57: should provide more test for getIllegalCountErrorHead
 - [x] line 71: fewer tests
-- [ ] line 343: unnecessary test
+- [x] line 343: unnecessary test
 - [ ] line 374: more tests for readFile
 - [ ] line 389: fewer tests for showFileNotFoundError
 

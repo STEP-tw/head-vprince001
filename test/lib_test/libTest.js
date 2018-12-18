@@ -371,10 +371,6 @@ describe("addHeading", function() {
   it("should return side arrows with space in between for empty string", function() {
     equal(addHeading(""), "==>  <==");
   });
-
-  it("should return undefined with side arrows for no input", function() {
-    equal(addHeading(), "==> undefined <==");
-  });
 });
 
 //====================================================================================================
