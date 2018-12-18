@@ -400,15 +400,13 @@ describe("isFileExists", () => {
 //====================================================================================================
 
 describe("readFile", () => {
-  let fileName = "file1";
-  let fs = {
-    existsSync: function(fileName) {
-      return false;
-    }
-  };
+  it("should return trimmed file data for existing file", () => {
+    equal(readFile(fs, "file1"), "file1");
+  });
 
   it("should return no such file found head error for non existing file", () => {
-    equal(readFile(fs, "file1"), "head: file1: No such file or directory");
+    fs.existsSync = file => false;
+    equal(readFile(fs, "file2"), "head: file2: No such file or directory");
   });
 });
 

@@ -31,7 +31,7 @@ Good readme description
 - [x] line 57: should provide more test for getIllegalCountErrorHead
 - [x] line 71: fewer tests
 - [x] line 343: unnecessary test
-- [ ] line 374: more tests for readFile
+- [x] line 374: more tests for readFile
 - [ ] line 389: fewer tests for showFileNotFoundError
 
 ### lib.js 
