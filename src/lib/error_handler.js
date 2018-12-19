@@ -1,13 +1,13 @@
-const getHeadIllegalCountMsg = function(type, numberOfLines) {
+const getHeadIllegalCountMsg = function(type, count) {
   let property = "line";
   if (type == "c") {
     property = "byte";
   }
-  return "head: illegal " + property + " count -- " + numberOfLines;
+  return "head: illegal " + property + " count -- " + count;
 };
 
-const getTailIllegalOffsetMsg = function(numberOfLines) {
-  return "tail: illegal offset -- " + numberOfLines;
+const getTailIllegalOffsetMsg = function(count) {
+  return "tail: illegal offset -- " + count;
 };
 
 const getNoFileErrorMsg = function(commandType, fileName) {

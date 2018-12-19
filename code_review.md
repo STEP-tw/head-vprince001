@@ -47,7 +47,7 @@ Good readme description
 - [x] function duplication could be avoided for runHead, runTail
 - [x] line 77: poor function naming, reverseData should is reversing string only
 - [ ] line 90, 81: function duplication
-- [ ] line 93: misleading name  noOfLines, why lines why not characters?
+- [x] line 93: misleading name  noOfLines, why lines why not characters?
 - [x] run tail function hard to understand, simple logic could be applied
 - [ ] run tail should not read in reverse
 - [x] line 123: showFileNotFoundError  nameing should be specific

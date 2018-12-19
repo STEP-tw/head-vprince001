@@ -14,12 +14,12 @@ const {
 const tail = function(userInput, fs) {
   let classifiedDetails = classifyDetails(userInput);
 
-  if (isNaN(classifiedDetails.numberOfLines)) {
-    return getTailIllegalOffsetMsg(classifiedDetails.numberOfLines);
+  if (isNaN(classifiedDetails.count)) {
+    return getTailIllegalOffsetMsg(classifiedDetails.count);
   }
 
-  numberOfLines = Math.abs(classifiedDetails.numberOfLines);
-  classifiedDetails.numberOfLines = numberOfLines;
+  count = Math.abs(classifiedDetails.count);
+  classifiedDetails.count = count;
   let output = runCommand(classifiedDetails, fs, "tail");
   return output.join("\n");
 };
@@ -38,7 +38,7 @@ const getFileData = function(data, length = 10, type = "n") {
 };
 
 const runCommand = function(classifiedDetails, fs, commandType) {
-  let { type, numberOfLines, fileNames } = classifiedDetails;
+  let { type, count, fileNames } = classifiedDetails;
   let desiredContent = [];
   let newLine = "";
 
@@ -63,13 +63,11 @@ const runCommand = function(classifiedDetails, fs, commandType) {
     desiredContent.push(data);
     if (fileStatus) {
       desiredContent.pop();
-      desiredContent.push(getFileData(data, numberOfLines, type));
+      desiredContent.push(getFileData(data, count, type));
 
       if (commandType == "tail") {
         desiredContent.pop();
-        desiredContent.push(
-          reverseString(getFileData(data, numberOfLines, type))
-        );
+        desiredContent.push(reverseString(getFileData(data, count, type)));
       }
     }
   });
@@ -81,7 +79,7 @@ const getHeadParameters = function(headParameters) {
   if (headParameters[0] == "-n" || headParameters[0] == "-c") {
     return {
       type: headParameters[0][1],
-      numberOfLines: headParameters[1],
+      count: headParameters[1],
       fileNames: headParameters.slice(2)
     };
   }
@@ -89,14 +87,14 @@ const getHeadParameters = function(headParameters) {
   if (!isNaN(Math.abs(headParameters[0]))) {
     return {
       type: "n",
-      numberOfLines: Math.abs(headParameters[0]),
+      count: Math.abs(headParameters[0]),
       fileNames: headParameters.slice(1)
     };
   }
 
   return {
     type: headParameters[0][1],
-    numberOfLines: headParameters[0].slice(2),
+    count: headParameters[0].slice(2),
     fileNames: headParameters.slice(1)
   };
 };
@@ -107,7 +105,7 @@ const classifyDetails = function(userInput) {
   }
   return {
     type: "n",
-    numberOfLines: 10,
+    count: 10,
     fileNames: userInput
   };
 };
@@ -115,13 +113,10 @@ const classifyDetails = function(userInput) {
 const head = function(userInput, fs) {
   let classifiedDetails = classifyDetails(userInput);
 
-  if (
-    classifiedDetails.numberOfLines < 1 ||
-    isNaN(classifiedDetails.numberOfLines)
-  ) {
+  if (classifiedDetails.count < 1 || isNaN(classifiedDetails.count)) {
     return getHeadIllegalCountMsg(
       classifiedDetails.type,
-      classifiedDetails.numberOfLines
+      classifiedDetails.count
     );
   }
 

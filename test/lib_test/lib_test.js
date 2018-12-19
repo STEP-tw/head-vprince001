@@ -54,32 +54,32 @@ describe("runCommand", function() {
   let classifiedDetails = {};
 
   it("should return first 3 characters of file without heading for c, 3, file, fs and head as input", function() {
-    classifiedDetails = { type: "c", numberOfLines: 3, fileNames: [file1] };
+    classifiedDetails = { type: "c", count: 3, fileNames: [file1] };
     let expectedOutput = ["lin"];
     assert.deepEqual(runCommand(classifiedDetails, fs, "head"), expectedOutput);
   });
 
   it("should return last 3 characters of file without heading for c, 3, file, fs and head as input", function() {
-    classifiedDetails = { type: "c", numberOfLines: 3, fileNames: [file1] };
+    classifiedDetails = { type: "c", count: 3, fileNames: [file1] };
     let expectedOutput = ["ne1"];
     assert.deepEqual(runCommand(classifiedDetails, fs, "tail"), expectedOutput);
   });
 
   it("should return all data for c, number of chars more than all file chars, file, fs and head as input", function() {
-    classifiedDetails = { type: "c", numberOfLines: 6, fileNames: [file1] };
+    classifiedDetails = { type: "c", count: 6, fileNames: [file1] };
     let expectedOutput = ["line1"];
     assert.deepEqual(runCommand(classifiedDetails, fs, "head"), expectedOutput);
   });
 
   it("should return all data for c, number of chars more than all file chars, file, fs and tail as input", function() {
-    classifiedDetails = { type: "c", numberOfLines: 6, fileNames: [file1] };
+    classifiedDetails = { type: "c", count: 6, fileNames: [file1] };
     let expectedOutput = ["line1"];
     assert.deepEqual(runCommand(classifiedDetails, fs, "tail"), expectedOutput);
   });
 
   it("should return first 6 characters of files with headings for c, 6, files, fs and head as input", function() {
     files = [file1, file2];
-    classifiedDetails = { type: "c", numberOfLines: 6, fileNames: files };
+    classifiedDetails = { type: "c", count: 6, fileNames: files };
     let expectedOutput = [
       "==> line1 <==",
       "line1",
@@ -91,7 +91,7 @@ describe("runCommand", function() {
 
   it("should return last 6 characters of files with headings for c, 6 and files, fs and tail as input", function() {
     files = [file1, file2];
-    classifiedDetails = { type: "c", numberOfLines: 6, fileNames: files };
+    classifiedDetails = { type: "c", count: 6, fileNames: files };
     let expectedOutput = [
       "==> line1 <==",
       "line1",
@@ -103,26 +103,26 @@ describe("runCommand", function() {
   });
 
   it("should return first line of file without heading for n, 1, file, fs and head as input", function() {
-    classifiedDetails = { type: "n", numberOfLines: 1, fileNames: [file2] };
+    classifiedDetails = { type: "n", count: 1, fileNames: [file2] };
     let expectedOutput = ["line1"];
     assert.deepEqual(runCommand(classifiedDetails, fs, "head"), expectedOutput);
   });
 
   it("should return last line of file without heading for n, 1, file, fs and tail as input", function() {
-    classifiedDetails = { type: "n", numberOfLines: 1, fileNames: [file2] };
+    classifiedDetails = { type: "n", count: 1, fileNames: [file2] };
     let expectedOutput = ["line2"];
     assert.deepEqual(runCommand(classifiedDetails, fs, "tail"), expectedOutput);
   });
 
   it("should return all data for n, number of lines more than all file lines, file, fs and head as input", function() {
-    classifiedDetails = { type: "n", numberOfLines: 3, fileNames: [file2] };
+    classifiedDetails = { type: "n", count: 3, fileNames: [file2] };
     let expectedOutput = ["line1\nline2"];
 
     assert.deepEqual(runCommand(classifiedDetails, fs, "head"), expectedOutput);
   });
 
   it("should return all data for n, number of lines more than all file lines, file, fs and tail as input", function() {
-    classifiedDetails = { type: "n", numberOfLines: 3, fileNames: [file2] };
+    classifiedDetails = { type: "n", count: 3, fileNames: [file2] };
     let expectedOutput = ["line1\nline2"];
 
     assert.deepEqual(runCommand(classifiedDetails, fs, "tail"), expectedOutput);
@@ -130,7 +130,7 @@ describe("runCommand", function() {
 
   it("should return first 2 lines of files with headings for n, 2, files, fs and head as input", function() {
     files = [file1, file2, file3];
-    classifiedDetails = { type: "n", numberOfLines: 2, fileNames: files };
+    classifiedDetails = { type: "n", count: 2, fileNames: files };
     let expectedOutput = [
       "==> line1 <==",
       "line1",
@@ -145,7 +145,7 @@ describe("runCommand", function() {
 
   it("should return last 2 lines of files with headings for n, 2, files, fs and tail as input", function() {
     files = [file1, file2, file3];
-    classifiedDetails = { type: "n", numberOfLines: 2, fileNames: files };
+    classifiedDetails = { type: "n", count: 2, fileNames: files };
     let expectedOutput = [
       "==> line1 <==",
       "line1",
@@ -162,91 +162,91 @@ describe("runCommand", function() {
 //====================================================================================================
 
 describe("getHeadParameters", () => {
-  it("should return type, numberOfLines and fileNames in an object for -n1 and file as input", () => {
+  it("should return type, count and fileNames in an object for -n1 and file as input", () => {
     let input = ["-n1", "file.txt"];
     let expectedOutput = {
       type: "n",
-      numberOfLines: 1,
+      count: 1,
       fileNames: ["file.txt"]
     };
     assert.deepEqual(getHeadParameters(input), expectedOutput);
   });
 
-  it("should return type, numberOfLines and fileNames in an object for -n1 and 2 files as input", () => {
+  it("should return type, count and fileNames in an object for -n1 and 2 files as input", () => {
     let input = ["-n1", "file1.txt", "file2.txt"];
     let expectedOutput = {
       type: "n",
-      numberOfLines: 1,
+      count: 1,
       fileNames: ["file1.txt", "file2.txt"]
     };
     assert.deepEqual(getHeadParameters(input), expectedOutput);
   });
 
-  it("should return type, numberOfLines and fileNames in an object for -n, 1 and 1 file as input", () => {
+  it("should return type, count and fileNames in an object for -n, 1 and 1 file as input", () => {
     let input = ["-n", "1", "file1.txt"];
     let expectedOutput = {
       type: "n",
-      numberOfLines: 1,
+      count: 1,
       fileNames: ["file1.txt"]
     };
     assert.deepEqual(getHeadParameters(input), expectedOutput);
   });
 
-  it("should return type, numberOfLines and fileNames in an object for -n, 1 and 2 files as input", () => {
+  it("should return type, count and fileNames in an object for -n, 1 and 2 files as input", () => {
     let input = ["-n", "1", "file1.txt", "file2.txt"];
     let expectedOutput = {
       type: "n",
-      numberOfLines: 1,
+      count: 1,
       fileNames: ["file1.txt", "file2.txt"]
     };
     assert.deepEqual(getHeadParameters(input), expectedOutput);
   });
 
-  it("should return type, numberOfLines and fileNames in an object for 1 and 2 files as input", () => {
+  it("should return type, count and fileNames in an object for 1 and 2 files as input", () => {
     let input = ["1", "file1.txt", "file2.txt"];
     let expectedOutput = {
       type: "n",
-      numberOfLines: 1,
+      count: 1,
       fileNames: ["file1.txt", "file2.txt"]
     };
     assert.deepEqual(getHeadParameters(input), expectedOutput);
   });
 
-  it("should return type, numberOfLines and fileNames in an object for -c1, and 1 file as input", () => {
+  it("should return type, count and fileNames in an object for -c1, and 1 file as input", () => {
     let input = ["-c1", "file1.txt"];
     let expectedOutput = {
       type: "c",
-      numberOfLines: 1,
+      count: 1,
       fileNames: ["file1.txt"]
     };
     assert.deepEqual(getHeadParameters(input), expectedOutput);
   });
 
-  it("should return type, numberOfLines and fileNames in an object for -c1, and 2 files as input", () => {
+  it("should return type, count and fileNames in an object for -c1, and 2 files as input", () => {
     let input = ["-c1", "file1.txt", "file2.txt"];
     let expectedOutput = {
       type: "c",
-      numberOfLines: 1,
+      count: 1,
       fileNames: ["file1.txt", "file2.txt"]
     };
     assert.deepEqual(getHeadParameters(input), expectedOutput);
   });
 
-  it("should return type, numberOfLines and fileNames in an object for -c, 1 and 1 file as input", () => {
+  it("should return type, count and fileNames in an object for -c, 1 and 1 file as input", () => {
     let input = ["-c", "1", "file1.txt"];
     let expectedOutput = {
       type: "c",
-      numberOfLines: 1,
+      count: 1,
       fileNames: ["file1.txt"]
     };
     assert.deepEqual(getHeadParameters(input), expectedOutput);
   });
 
-  it("should return type, numberOfLines and fileNames in an object for -c, 1 and 2 files as input", () => {
+  it("should return type, count and fileNames in an object for -c, 1 and 2 files as input", () => {
     let input = ["-c", "1", "file1.txt", "file2.txt"];
     let expectedOutput = {
       type: "c",
-      numberOfLines: 1,
+      count: 1,
       fileNames: ["file1.txt", "file2.txt"]
     };
     assert.deepEqual(getHeadParameters(input), expectedOutput);
@@ -256,19 +256,19 @@ describe("getHeadParameters", () => {
 //====================================================================================================
 
 describe("classifyDetails", () => {
-  it("should return type, numberOfLines and fileNames in an object for -n, 5 and file as input", () => {
+  it("should return type, count and fileNames in an object for -n, 5 and file as input", () => {
     let expectedOutput = {
       type: "n",
-      numberOfLines: 5,
+      count: 5,
       fileNames: ["file1.txt"]
     };
     assert.deepEqual(classifyDetails(["-n", "5", "file1.txt"]), expectedOutput);
   });
 
-  it("should return type, numberOfLines and fileNames in an object for -n, 5 and 2 files as input", () => {
+  it("should return type, count and fileNames in an object for -n, 5 and 2 files as input", () => {
     let expectedOutput = {
       type: "n",
-      numberOfLines: 5,
+      count: 5,
       fileNames: ["file1.txt", "file2.txt"]
     };
     assert.deepEqual(
@@ -277,10 +277,10 @@ describe("classifyDetails", () => {
     );
   });
 
-  it("should return type, numberOfLines and fileNames in an object for -c, 5 and 2 files as input", () => {
+  it("should return type, count and fileNames in an object for -c, 5 and 2 files as input", () => {
     let expectedOutput = {
       type: "c",
-      numberOfLines: 5,
+      count: 5,
       fileNames: ["file1.txt", "file2.txt"]
     };
     assert.deepEqual(
@@ -289,10 +289,10 @@ describe("classifyDetails", () => {
     );
   });
 
-  it("should return type, numberOfLines and fileNames in an object for n, 5 and file as input", () => {
+  it("should return type, count and fileNames in an object for n, 5 and file as input", () => {
     let expectedOutput = {
       type: "n",
-      numberOfLines: 10,
+      count: 10,
       fileNames: ["n", "5", "file1.txt"]
     };
     assert.deepEqual(classifyDetails(["n", "5", "file1.txt"]), expectedOutput);
