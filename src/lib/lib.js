@@ -12,15 +12,15 @@ const {
 } = require("./error_handler.js");
 
 const tail = function(usrInput, fs) {
-  let { type, numberOfLines, fileNames } = classifyDetails(usrInput);
+  let classifiedDetails = classifyDetails(usrInput);
 
-  if (isNaN(numberOfLines)) {
-    return getTailIllegalOffsetMsg(numberOfLines);
+  if (isNaN(classifiedDetails.numberOfLines)) {
+    return getTailIllegalOffsetMsg(classifiedDetails.numberOfLines);
   }
 
-  numberOfLines = Math.abs(numberOfLines);
-  let commandType = "tail";
-  let output = runCommand(type, numberOfLines, fileNames, fs, commandType);
+  numberOfLines = Math.abs(classifiedDetails.numberOfLines);
+  classifiedDetails.numberOfLines = numberOfLines;
+  let output = runCommand(classifiedDetails, fs, "tail");
   return output.join("\n");
 };
 
@@ -37,15 +37,20 @@ const getFileData = function(data, length = 10, type = "n") {
     .join("");
 };
 
-const runCommand = function(type, numberOfLines, fileNames, fs, commandType) {
-  let output = [];
+const runCommand = function(classifiedDetails, fs, commandType) {
+  let { type, numberOfLines, fileNames } = classifiedDetails;
+  let desiredContent = [];
   let newLine = "";
 
   fileNames.forEach(fileName => {
     let fileStatus = isFileExists(fs, fileName);
 
-    if (fileNames.length > 1 && fileStatus) {
-      output.push(newLine + addHeading(fileName));
+    if (!fileStatus) {
+      return getNoFileErrorMsg(commandType, fileName);
+    }
+
+    if (fileNames.length > 1) {
+      desiredContent.push(newLine + addHeading(fileName));
     }
     newLine = "\n";
 
@@ -55,22 +60,21 @@ const runCommand = function(type, numberOfLines, fileNames, fs, commandType) {
       data = reverseData(data);
     }
 
-    if (!fileStatus) {
-      data = getNoFileErrorMsg(commandType, fileName);
-    }
-
-    output.push(data);
+    desiredContent.push(data);
     if (fileStatus) {
-      output.pop();
-      if (commandType == "head") {
-        output.push(getFileData(data, numberOfLines, type));
-      } else {
-        output.push(reverseData(getFileData(data, numberOfLines, type)));
+      desiredContent.pop();
+      desiredContent.push(getFileData(data, numberOfLines, type));
+
+      if (commandType == "tail") {
+        desiredContent.pop();
+        desiredContent.push(
+          reverseData(getFileData(data, numberOfLines, type))
+        );
       }
     }
   });
 
-  return output;
+  return desiredContent;
 };
 
 const getHeadParameters = function(headParameters) {
@@ -109,14 +113,19 @@ const classifyDetails = function(usrInput) {
 };
 
 const head = function(usrInput, fs) {
-  let { type, numberOfLines, fileNames } = classifyDetails(usrInput);
+  let classifiedDetails = classifyDetails(usrInput);
 
-  if (numberOfLines < 1 || isNaN(numberOfLines)) {
-    return getHeadIllegalCountMsg(type, numberOfLines);
+  if (
+    classifiedDetails.numberOfLines < 1 ||
+    isNaN(classifiedDetails.numberOfLines)
+  ) {
+    return getHeadIllegalCountMsg(
+      classifiedDetails.type,
+      classifiedDetails.numberOfLines
+    );
   }
 
-  let commandType = "head";
-  let output = runCommand(type, numberOfLines, fileNames, fs, commandType);
+  let output = runCommand(classifiedDetails, fs, "head");
   return output.join("\n");
 };
 

@@ -41,16 +41,16 @@ Good readme description
 - [x] error message genrerating functions should be in different library
 - [x] functions are called before they are defined
 - [x] should have seperate functions for generating error messages
-- [ ] line 12: function name can be better, function name is misleading
-- [ ] line 18: misleading name
-- [ ] line 52: misleading name
+- [x] line 12: function name can be better, function name is misleading
+- [x] line 18: misleading name
+- [x] line 52: misleading name
 - [x] function duplication could be avoided for runHead, runTail
 - [ ] line 77: poor function naming, reverseData should is reversing string only
 - [ ] line 90, 81: function duplication
 - [ ] line 93: misleading name  noOfLines, why lines why not characters?
-- [ ] run tail function hard to understand, simple logic could be applied
+- [x] run tail function hard to understand, simple logic could be applied
 - [ ] run tail should not read in reverse
 - [x] line 123: showFileNotFoundError  nameing should be specific
-- [ ] line 14: unnecessary semicolon
+- [ ] ~~line 14: unnecessary semicolon~~
 - [ ] line 118: why triming blank lines? will not work for files with blank lines
 - [ ] line 47: tail function is doing work of classfyingDetails
