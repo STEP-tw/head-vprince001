@@ -4,7 +4,7 @@ const {
   isFileExists,
   addHeading,
   readFile,
-  reverseData
+  reverseString
 } = require("../../src/util_lib/util.js");
 
 const reader = function(unicode, file) {
@@ -60,16 +60,16 @@ describe("readFile", () => {
 
 //=====================================================================================================
 
-describe("reverseData", () => {
+describe("reverseString", () => {
   it("should return empty string for empty string", () => {
-    assert.equal(reverseData(""), "");
+    assert.equal(reverseString(""), "");
   });
 
   it("should return reverse string for strings without spaces as input", () => {
-    assert.equal(reverseData("Something"), "gnihtemoS");
+    assert.equal(reverseString("Something"), "gnihtemoS");
   });
 
   it("should return reverse string for strings with spaces as input", () => {
-    assert.equal(reverseData("two words"), "sdrow owt");
+    assert.equal(reverseString("two words"), "sdrow owt");
   });
 });

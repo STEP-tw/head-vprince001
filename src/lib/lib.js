@@ -2,7 +2,7 @@ const {
   readFile,
   addHeading,
   isFileExists,
-  reverseData
+  reverseString
 } = require("../util_lib/util.js");
 
 const {
@@ -57,7 +57,7 @@ const runCommand = function(classifiedDetails, fs, commandType) {
     let data = readFile(fs, fileName);
 
     if (commandType == "tail") {
-      data = reverseData(data);
+      data = reverseString(data);
     }
 
     desiredContent.push(data);
@@ -68,7 +68,7 @@ const runCommand = function(classifiedDetails, fs, commandType) {
       if (commandType == "tail") {
         desiredContent.pop();
         desiredContent.push(
-          reverseData(getFileData(data, numberOfLines, type))
+          reverseString(getFileData(data, numberOfLines, type))
         );
       }
     }

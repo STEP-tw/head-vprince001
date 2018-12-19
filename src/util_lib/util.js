@@ -12,7 +12,7 @@ const isFileExists = function(fs, fileName) {
   return fs.existsSync(fileName);
 };
 
-const reverseData = function(data) {
+const reverseString = function(data) {
   return data
     .split("")
     .reverse()
@@ -23,5 +23,5 @@ module.exports = {
   isFileExists,
   addHeading,
   readFile,
-  reverseData
+  reverseString
 };
