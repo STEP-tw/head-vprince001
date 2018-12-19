@@ -11,8 +11,8 @@ const {
   getNoFileErrorMsg
 } = require("./error_handler.js");
 
-const tail = function(usrInput, fs) {
-  let classifiedDetails = classifyDetails(usrInput);
+const tail = function(userInput, fs) {
+  let classifiedDetails = classifyDetails(userInput);
 
   if (isNaN(classifiedDetails.numberOfLines)) {
     return getTailIllegalOffsetMsg(classifiedDetails.numberOfLines);
@@ -101,19 +101,19 @@ const getHeadParameters = function(headParameters) {
   };
 };
 
-const classifyDetails = function(usrInput) {
-  if (usrInput[0][0] == "-") {
-    return getHeadParameters(usrInput);
+const classifyDetails = function(userInput) {
+  if (userInput[0][0] == "-") {
+    return getHeadParameters(userInput);
   }
   return {
     type: "n",
     numberOfLines: 10,
-    fileNames: usrInput
+    fileNames: userInput
   };
 };
 
-const head = function(usrInput, fs) {
-  let classifiedDetails = classifyDetails(usrInput);
+const head = function(userInput, fs) {
+  let classifiedDetails = classifyDetails(userInput);
 
   if (
     classifiedDetails.numberOfLines < 1 ||
