@@ -44,9 +44,9 @@ Good readme description
 - [ ] line 12: function name can be better, function name is misleading
 - [ ] line 18: misleading name
 - [ ] line 52: misleading name
-- [ ] function duplication could be avoided for runHead, runTail
+- [x] function duplication could be avoided for runHead, runTail
 - [ ] line 77: poor function naming, reverseData should is reversing string only
-- [ ] line 90, 81: function dublication
+- [ ] line 90, 81: function duplication
 - [ ] line 93: misleading name  noOfLines, why lines why not characters?
 - [ ] run tail function hard to understand, simple logic could be applied
 - [ ] run tail should not read in reverse

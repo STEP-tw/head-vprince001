@@ -11,32 +11,6 @@ const {
   getNoFileErrorMsg
 } = require("./error_handler.js");
 
-const runTail = function(type, numberOfLines, fileNames, fs, commandType) {
-  let output = [];
-  let newLine = "";
-
-  fileNames.forEach(fileName => {
-    let fileStatus = isFileExists(fs, fileName);
-
-    if (fileNames.length > 1 && fileStatus) {
-      output.push(newLine + addHeading(fileName));
-    }
-    newLine = "\n";
-    let data = reverseData(readFile(fs, fileName));
-
-    if (!fileStatus) {
-      data = getNoFileErrorMsg(commandType, fileName);
-    }
-
-    output.push(data);
-    if (fileStatus) {
-      output.pop();
-      output.push(reverseData(getFileData(data, numberOfLines, type)));
-    }
-  });
-  return output;
-};
-
 const tail = function(usrInput, fs) {
   let { type, numberOfLines, fileNames } = classifyDetails(usrInput);
 
@@ -46,7 +20,7 @@ const tail = function(usrInput, fs) {
 
   numberOfLines = Math.abs(numberOfLines);
   let commandType = "tail";
-  let output = runTail(type, numberOfLines, fileNames, fs, commandType);
+  let output = runCommand(type, numberOfLines, fileNames, fs, commandType);
   return output.join("\n");
 };
 
@@ -63,9 +37,10 @@ const getFileData = function(data, length = 10, type = "n") {
     .join("");
 };
 
-const runHead = function(type, numberOfLines, fileNames, fs, commandType) {
+const runCommand = function(type, numberOfLines, fileNames, fs, commandType) {
   let output = [];
   let newLine = "";
+
   fileNames.forEach(fileName => {
     let fileStatus = isFileExists(fs, fileName);
 
@@ -76,6 +51,10 @@ const runHead = function(type, numberOfLines, fileNames, fs, commandType) {
 
     let data = readFile(fs, fileName);
 
+    if (commandType == "tail") {
+      data = reverseData(data);
+    }
+
     if (!fileStatus) {
       data = getNoFileErrorMsg(commandType, fileName);
     }
@@ -83,9 +62,14 @@ const runHead = function(type, numberOfLines, fileNames, fs, commandType) {
     output.push(data);
     if (fileStatus) {
       output.pop();
-      output.push(getFileData(data, numberOfLines, type));
+      if (commandType == "head") {
+        output.push(getFileData(data, numberOfLines, type));
+      } else {
+        output.push(reverseData(getFileData(data, numberOfLines, type)));
+      }
     }
   });
+
   return output;
 };
 
@@ -132,15 +116,14 @@ const head = function(usrInput, fs) {
   }
 
   let commandType = "head";
-  let output = runHead(type, numberOfLines, fileNames, fs, commandType);
+  let output = runCommand(type, numberOfLines, fileNames, fs, commandType);
   return output.join("\n");
 };
 
 module.exports = {
-  runTail,
   tail,
   getFileData,
-  runHead,
+  runCommand,
   getHeadParameters,
   classifyDetails,
   head
