@@ -11,7 +11,7 @@ const {
   getNoFileErrorMsg
 } = require("./error_handler.js");
 
-const runTail = function(type, numberOfLines, fileNames, fs) {
+const runTail = function(type, numberOfLines, fileNames, fs, commandType) {
   let output = [];
   let newLine = "";
 
@@ -25,7 +25,7 @@ const runTail = function(type, numberOfLines, fileNames, fs) {
     let data = reverseData(readFile(fs, fileName));
 
     if (!fileStatus) {
-      data = getNoFileErrorMsg("tail", fileName);
+      data = getNoFileErrorMsg(commandType, fileName);
     }
 
     output.push(data);
@@ -45,7 +45,8 @@ const tail = function(usrInput, fs) {
   }
 
   numberOfLines = Math.abs(numberOfLines);
-  let output = runTail(type, numberOfLines, fileNames, fs);
+  let commandType = "tail";
+  let output = runTail(type, numberOfLines, fileNames, fs, commandType);
   return output.join("\n");
 };
 
@@ -62,7 +63,7 @@ const getFileData = function(data, length = 10, type = "n") {
     .join("");
 };
 
-const runHead = function(type, numberOfLines, fileNames, fs) {
+const runHead = function(type, numberOfLines, fileNames, fs, commandType) {
   let output = [];
   let newLine = "";
   fileNames.forEach(fileName => {
@@ -76,7 +77,7 @@ const runHead = function(type, numberOfLines, fileNames, fs) {
     let data = readFile(fs, fileName);
 
     if (!fileStatus) {
-      data = getNoFileErrorMsg("head", fileName);
+      data = getNoFileErrorMsg(commandType, fileName);
     }
 
     output.push(data);
@@ -130,6 +131,7 @@ const head = function(usrInput, fs) {
     return getHeadIllegalCountMsg(type, numberOfLines);
   }
 
+  let commandType = "head";
   let output = runHead(type, numberOfLines, fileNames, fs, commandType);
   return output.join("\n");
 };
