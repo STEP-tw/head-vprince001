@@ -56,14 +56,6 @@ describe("readFile", () => {
   it("should return trimmed file data for existing file", () => {
     assert.equal(readFile(fs, "file1"), "file1");
   });
-
-  it("should return no such file found head error for non existing file", () => {
-    fs.existsSync = file => false;
-    assert.equal(
-      readFile(fs, "file2"),
-      "head: file2: No such file or directory"
-    );
-  });
 });
 
 //=====================================================================================================

@@ -10,12 +10,12 @@ const getTailIllegalOffsetMsg = function(numberOfLines) {
   return "tail: illegal offset -- " + numberOfLines;
 };
 
-const getTailNoFileErrorMsg = function(fileName) {
-  return "tail: " + fileName + ": No such file or directory";
+const getNoFileErrorMsg = function(commandType, fileName) {
+  return commandType + ": " + fileName + ": No such file or directory";
 };
 
 module.exports = {
   getHeadIllegalCountMsg,
   getTailIllegalOffsetMsg,
-  getTailNoFileErrorMsg
+  getNoFileErrorMsg
 };

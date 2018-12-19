@@ -8,23 +8,24 @@ const {
 const {
   getTailIllegalOffsetMsg,
   getHeadIllegalCountMsg,
-  getTailNoFileErrorMsg
+  getNoFileErrorMsg
 } = require("./error_handler.js");
 
 const runTail = function(type, numberOfLines, fileNames, fs) {
   let output = [];
   let newLine = "";
 
-  for (let count = 0; count < fileNames.length; count++) {
-    let fileStatus = isFileExists(fs, fileNames[count]);
+  fileNames.forEach(fileName => {
+    let fileStatus = isFileExists(fs, fileName);
 
     if (fileNames.length > 1 && fileStatus) {
-      output.push(newLine + addHeading(fileNames[count]));
+      output.push(newLine + addHeading(fileName));
     }
     newLine = "\n";
-    let data = reverseData(readFile(fs, fileNames[count]));
+    let data = reverseData(readFile(fs, fileName));
+
     if (!fileStatus) {
-      data = getTailNoFileErrorMsg(fileNames[count]);
+      data = getNoFileErrorMsg("tail", fileName);
     }
 
     output.push(data);
@@ -32,7 +33,7 @@ const runTail = function(type, numberOfLines, fileNames, fs) {
       output.pop();
       output.push(reverseData(getFileData(data, numberOfLines, type)));
     }
-  }
+  });
   return output;
 };
 
@@ -64,22 +65,26 @@ const getFileData = function(data, length = 10, type = "n") {
 const runHead = function(type, numberOfLines, fileNames, fs) {
   let output = [];
   let newLine = "";
-
-  for (let count = 0; count < fileNames.length; count++) {
-    let fileStatus = isFileExists(fs, fileNames[count]);
+  fileNames.forEach(fileName => {
+    let fileStatus = isFileExists(fs, fileName);
 
     if (fileNames.length > 1 && fileStatus) {
-      output.push(newLine + addHeading(fileNames[count]));
+      output.push(newLine + addHeading(fileName));
     }
     newLine = "\n";
 
-    let data = readFile(fs, fileNames[count]);
+    let data = readFile(fs, fileName);
+
+    if (!fileStatus) {
+      data = getNoFileErrorMsg("head", fileName);
+    }
+
     output.push(data);
     if (fileStatus) {
       output.pop();
       output.push(getFileData(data, numberOfLines, type));
     }
-  }
+  });
   return output;
 };
 
@@ -125,7 +130,7 @@ const head = function(usrInput, fs) {
     return getHeadIllegalCountMsg(type, numberOfLines);
   }
 
-  let output = runHead(type, numberOfLines, fileNames, fs);
+  let output = runHead(type, numberOfLines, fileNames, fs, commandType);
   return output.join("\n");
 };
 

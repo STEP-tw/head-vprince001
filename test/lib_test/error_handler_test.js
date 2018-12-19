@@ -3,7 +3,7 @@ const assert = require("assert");
 const {
   getHeadIllegalCountMsg,
   getTailIllegalOffsetMsg,
-  getTailNoFileErrorMsg
+  getNoFileErrorMsg
 } = require("../../src/lib/error_handler.js");
 
 //=====================================================================================================
@@ -50,9 +50,14 @@ describe("getTailIllegalOffsetMsg", function() {
 
 //====================================================================================================
 
-describe("getTailNoFileErrorMsg", () => {
+describe("getNoFileErrorMsg", () => {
+  it("should return no such file found head error for non existing file", () => {
+    let expectedOutput = "head: file1: No such file or directory";
+    assert.equal(getNoFileErrorMsg("head", "file1"), expectedOutput);
+  });
+
   it("should return no such file found tail error for non existing file", () => {
     let expectedOutput = "tail: file1: No such file or directory";
-    assert.equal(getTailNoFileErrorMsg("file1"), expectedOutput);
+    assert.equal(getNoFileErrorMsg("tail", "file1"), expectedOutput);
   });
 });

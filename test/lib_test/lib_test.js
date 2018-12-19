@@ -44,18 +44,9 @@ describe("runTail", function() {
       "line2\nline3"
     ];
 
-    assert.deepEqual(
-      runTail("n", 2, [file1, file2, file3], fs),
-      expectedOutput
-    );
-  });
+    let files = [file1, file2, file3];
 
-  it("should return no such file error msg for n, 2 and non existing file", () => {
-    let existsSync = file => false;
-    let fs = { existsSync };
-
-    let expectedOutput = "tail: file1: No such file or directory";
-    assert.equal(runTail("n", 2, ["file1"], fs), expectedOutput);
+    assert.deepEqual(runTail("n", 2, files, fs), expectedOutput);
   });
 });
 

@@ -50,7 +50,7 @@ Good readme description
 - [ ] line 93: misleading name  noOfLines, why lines why not characters?
 - [ ] run tail function hard to understand, simple logic could be applied
 - [ ] run tail should not read in reverse
-- [ ] line 123: showFileNotFoundError  nameing should be specific
+- [x] line 123: showFileNotFoundError  nameing should be specific
 - [ ] line 14: unnecessary semicolon
 - [ ] line 118: why triming blank lines? will not work for files with blank lines
 - [ ] line 47: tail function is doing work of classfyingDetails
