@@ -38,40 +38,35 @@ const getFileData = function(data, length = 10, type = "n") {
 };
 
 const runCommand = function(classifiedDetails, fs, commandType) {
-  let { type, count, fileNames } = classifiedDetails;
+  const { type, count, fileNames } = classifiedDetails;
   let desiredContent = [];
   let newLine = "";
 
-  fileNames.forEach(fileName => {
-    let fileStatus = isFileExists(fs, fileName);
+  for (let index = 0; index < fileNames.length; index++) {
+    let fileStatus = isFileExists(fs, fileNames[index]);
 
     if (!fileStatus) {
-      return getNoFileErrorMsg(commandType, fileName);
+      return getNoFileErrorMsg(commandType, fileNames[index]);
     }
 
     if (fileNames.length > 1) {
-      desiredContent.push(newLine + addHeading(fileName));
+      desiredContent.push(newLine + addHeading(fileNames[index]));
     }
     newLine = "\n";
 
-    let data = readFile(fs, fileName);
+    let data = readFile(fs, fileNames[index]);
 
     if (commandType == "tail") {
       data = reverseString(data);
     }
 
-    desiredContent.push(data);
-    if (fileStatus) {
+    desiredContent.push(getFileData(data, count, type));
+
+    if (commandType == "tail") {
       desiredContent.pop();
-      desiredContent.push(getFileData(data, count, type));
-
-      if (commandType == "tail") {
-        desiredContent.pop();
-        desiredContent.push(reverseString(getFileData(data, count, type)));
-      }
+      desiredContent.push(reverseString(getFileData(data, count, type)));
     }
-  });
-
+  }
   return desiredContent;
 };
 

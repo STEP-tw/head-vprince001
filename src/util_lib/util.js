@@ -1,7 +1,5 @@
 const readFile = function(fs, fileName) {
-  if (isFileExists(fs, fileName)) {
-    return fs.readFileSync(fileName, "utf-8").trim();
-  }
+  return fs.readFileSync(fileName, "utf-8").trim();
 };
 
 const addHeading = function(head) {

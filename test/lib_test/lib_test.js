@@ -157,6 +157,24 @@ describe("runCommand", function() {
 
     assert.deepEqual(runCommand(classifiedDetails, fs, "tail"), expectedOutput);
   });
+
+  it("should return no such file head error for non existing file", () => {
+    classifiedDetails = { type: "c", count: 3, fileNames: ["file"] };
+    let expectedOutput = "head: file: No such file or directory";
+    const existsSync = file => false;
+    const fs = { readFileSync, existsSync };
+
+    assert.equal(runCommand(classifiedDetails, fs, "head"), expectedOutput);
+  });
+
+  it("should return no such file tail error for non existing file", () => {
+    classifiedDetails = { type: "c", count: 3, fileNames: ["file"] };
+    let expectedOutput = "tail: file: No such file or directory";
+    const existsSync = file => false;
+    const fs = { readFileSync, existsSync };
+
+    assert.equal(runCommand(classifiedDetails, fs, "tail"), expectedOutput);
+  });
 });
 
 //====================================================================================================
