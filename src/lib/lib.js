@@ -25,16 +25,16 @@ const tail = function(userInput, fs) {
 };
 
 const getFileData = function(data, length = 10, type = "n") {
-  if (type == "n") {
+  if (type == "c") {
     return data
-      .split("\n")
+      .split("")
       .slice(0, length)
-      .join("\n");
+      .join("");
   }
   return data
-    .split("")
+    .split("\n")
     .slice(0, length)
-    .join("");
+    .join("\n");
 };
 
 const runCommand = function(classifiedDetails, fs, commandType) {

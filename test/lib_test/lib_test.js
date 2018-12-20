@@ -2,6 +2,7 @@ const assert = require("assert");
 
 const {
   tail,
+  getFileData,
   runCommand,
   getHeadParameters,
   classifyDetails,
@@ -46,6 +47,31 @@ describe("tail", function() {
 
 //=====================================================================================================
 
+describe("getFileData", function() {
+  const data = "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11";
+
+  it("should return first line for given data, 1 and n", function() {
+    assert.equal(getFileData(data, 1, "n"), "1");
+  });
+
+  it("should return first three lines for given data, 3 and n", function() {
+    assert.equal(getFileData(data, 3, "n"), "1\n2\n3");
+  });
+
+  it("should return first character for given data, 1 and c", function() {
+    assert.equal(getFileData(data, 1, "c"), "1");
+  });
+
+  it("should return first character for given data, 3 and c", function() {
+    assert.equal(getFileData(data, 3, "c"), "1\n2");
+  });
+
+  it("should return first 10 lines for given data", function() {
+    assert.equal(getFileData(data), "1\n2\n3\n4\n5\n6\n7\n8\n9\n10");
+  });
+});
+
+//=====================================================================================================
 describe("runCommand", function() {
   const file1 = "line1";
   const file2 = "line1\nline2";
