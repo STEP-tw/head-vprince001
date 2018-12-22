@@ -9,38 +9,47 @@ const {
   head
 } = require("../../src/lib/lib.js");
 
-const reader = function(unicode, file) {
-  return file;
+//=====================================================================================================
+
+const files = {
+  file1: "line1",
+  file2: "line1\nline2",
+  file3: "line1\nline2\nline3",
+  file4: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].join("\n")
 };
-const readFileSync = reader.bind(null, "utf8");
-const existsSync = file => true;
-const fs = { readFileSync, existsSync };
+
+const fs = {
+  readFileSync: function(fileName) {
+    return files[fileName];
+  },
+  existsSync: function(fileName) {
+    return files.hasOwnProperty(fileName);
+  }
+};
 
 //=====================================================================================================
 
 describe("tail", function() {
-  const data = "line1\nline2\nline3";
-
   it("should return last 2 lines of file for -n2 and file as input", function() {
-    let userArgs = ["-n2", data];
+    let userArgs = ["-n2", "file3"];
     let expectedOutput = "line2\nline3";
     assert.equal(tail(userArgs, fs), expectedOutput);
   });
 
   it("should return last 7 characters of file for -c, 7 and file as input", function() {
-    let userArgs = ["-c", "7", data];
+    let userArgs = ["-c", "7", "file3"];
     assert.equal(tail(userArgs, fs), "2\nline3");
   });
 
   it("should return illegal offset error msg for -np and file as input", function() {
     let errorMsg = "tail: illegal offset -- p";
-    let userArgs = ["-np", data];
+    let userArgs = ["-np", "file3"];
     assert.equal(tail(userArgs, fs), errorMsg);
   });
 
   it("should return empty string for -n0 and file as input", function() {
     let expectedOutput = "";
-    let userArgs = ["-n0", data];
+    let userArgs = ["-n0", "file3"];
     assert.equal(tail(userArgs, fs), expectedOutput);
   });
 });
@@ -51,77 +60,72 @@ describe("getFileData", function() {
   const data = "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11";
 
   it("should return first line for given data, 1 and n", function() {
-    assert.equal(getFileData(data, 1, "n"), "1");
+    assert.equal(getFileData(files.file3, 1, "n"), "line1");
   });
 
   it("should return first three lines for given data, 3 and n", function() {
-    assert.equal(getFileData(data, 3, "n"), "1\n2\n3");
+    assert.equal(getFileData(files.file3, 2, "n"), "line1\nline2");
   });
 
   it("should return first character for given data, 1 and c", function() {
-    assert.equal(getFileData(data, 1, "c"), "1");
+    assert.equal(getFileData(files.file3, 1, "c"), "l");
   });
 
-  it("should return first character for given data, 3 and c", function() {
-    assert.equal(getFileData(data, 3, "c"), "1\n2");
+  it("should return first character for given data, 8 and c", function() {
+    assert.equal(getFileData(files.file3, 8, "c"), "line1\nli");
   });
 
   it("should return first 10 lines for given data", function() {
-    assert.equal(getFileData(data), "1\n2\n3\n4\n5\n6\n7\n8\n9\n10");
+    assert.equal(getFileData(files.file4), "1\n2\n3\n4\n5\n6\n7\n8\n9\n10");
   });
 });
 
 //=====================================================================================================
+
 describe("runCommand", function() {
-  const file1 = "line1";
-  const file2 = "line1\nline2";
-  const file3 = "line1\nline2\nline3";
-  let files = [];
   let classifiedDetails = {};
 
   it("should return first 3 characters of file without heading for c, 3, file, fs and head as input", function() {
-    classifiedDetails = { type: "c", count: 3, fileNames: [file1] };
+    classifiedDetails = { type: "c", count: 3, fileNames: ["file1"] };
     let expectedOutput = ["lin"];
     assert.deepEqual(runCommand(classifiedDetails, fs, "head"), expectedOutput);
   });
 
   it("should return last 3 characters of file without heading for c, 3, file, fs and head as input", function() {
-    classifiedDetails = { type: "c", count: 3, fileNames: [file1] };
+    classifiedDetails = { type: "c", count: 3, fileNames: ["file1"] };
     let expectedOutput = ["ne1"];
     assert.deepEqual(runCommand(classifiedDetails, fs, "tail"), expectedOutput);
   });
 
   it("should return all data for c, number of chars more than all file chars, file, fs and head as input", function() {
-    classifiedDetails = { type: "c", count: 6, fileNames: [file1] };
+    classifiedDetails = { type: "c", count: 6, fileNames: ["file1"] };
     let expectedOutput = ["line1"];
     assert.deepEqual(runCommand(classifiedDetails, fs, "head"), expectedOutput);
   });
 
   it("should return all data for c, number of chars more than all file chars, file, fs and tail as input", function() {
-    classifiedDetails = { type: "c", count: 6, fileNames: [file1] };
+    classifiedDetails = { type: "c", count: 6, fileNames: ["file1"] };
     let expectedOutput = ["line1"];
     assert.deepEqual(runCommand(classifiedDetails, fs, "tail"), expectedOutput);
   });
 
   it("should return first 6 characters of files with headings for c, 6, files, fs and head as input", function() {
-    files = [file1, file2];
-    classifiedDetails = { type: "c", count: 6, fileNames: files };
+    classifiedDetails = { type: "c", count: 6, fileNames: ["file1", "file2"] };
     let expectedOutput = [
-      "==> line1 <==",
+      "==> file1 <==",
       "line1",
-      "\n==> line1\nline2 <==",
+      "\n==> file2 <==",
       "line1\n"
     ];
     assert.deepEqual(runCommand(classifiedDetails, fs, "head"), expectedOutput);
   });
 
   it("should return last 6 characters of files with headings for c, 6 and files, fs and tail as input", function() {
-    files = [file1, file2];
-    classifiedDetails = { type: "c", count: 6, fileNames: files };
+    classifiedDetails = { type: "c", count: 6, fileNames: ["file1", "file2"] };
     let expectedOutput = [
-      "==> line1 <==",
+      "==> file1 <==",
       "line1",
-      "\n==> line1\nline2 <==",
+      "\n==> file2 <==",
       "\nline2"
     ];
 
@@ -129,40 +133,43 @@ describe("runCommand", function() {
   });
 
   it("should return first line of file without heading for n, 1, file, fs and head as input", function() {
-    classifiedDetails = { type: "n", count: 1, fileNames: [file2] };
+    classifiedDetails = { type: "n", count: 1, fileNames: ["file2"] };
     let expectedOutput = ["line1"];
     assert.deepEqual(runCommand(classifiedDetails, fs, "head"), expectedOutput);
   });
 
   it("should return last line of file without heading for n, 1, file, fs and tail as input", function() {
-    classifiedDetails = { type: "n", count: 1, fileNames: [file2] };
+    classifiedDetails = { type: "n", count: 1, fileNames: ["file2"] };
     let expectedOutput = ["line2"];
     assert.deepEqual(runCommand(classifiedDetails, fs, "tail"), expectedOutput);
   });
 
   it("should return all data for n, number of lines more than all file lines, file, fs and head as input", function() {
-    classifiedDetails = { type: "n", count: 3, fileNames: [file2] };
+    classifiedDetails = { type: "n", count: 3, fileNames: ["file2"] };
     let expectedOutput = ["line1\nline2"];
 
     assert.deepEqual(runCommand(classifiedDetails, fs, "head"), expectedOutput);
   });
 
   it("should return all data for n, number of lines more than all file lines, file, fs and tail as input", function() {
-    classifiedDetails = { type: "n", count: 3, fileNames: [file2] };
+    classifiedDetails = { type: "n", count: 3, fileNames: ["file2"] };
     let expectedOutput = ["line1\nline2"];
 
     assert.deepEqual(runCommand(classifiedDetails, fs, "tail"), expectedOutput);
   });
 
   it("should return first 2 lines of files with headings for n, 2, files, fs and head as input", function() {
-    files = [file1, file2, file3];
-    classifiedDetails = { type: "n", count: 2, fileNames: files };
+    classifiedDetails = {
+      type: "n",
+      count: 2,
+      fileNames: ["file1", "file2", "file3"]
+    };
     let expectedOutput = [
-      "==> line1 <==",
+      "==> file1 <==",
       "line1",
-      "\n==> line1\nline2 <==",
+      "\n==> file2 <==",
       "line1\nline2",
-      "\n==> line1\nline2\nline3 <==",
+      "\n==> file3 <==",
       "line1\nline2"
     ];
 
@@ -170,14 +177,17 @@ describe("runCommand", function() {
   });
 
   it("should return last 2 lines of files with headings for n, 2, files, fs and tail as input", function() {
-    files = [file1, file2, file3];
-    classifiedDetails = { type: "n", count: 2, fileNames: files };
+    classifiedDetails = {
+      type: "n",
+      count: 2,
+      fileNames: ["file1", "file2", "file3"]
+    };
     let expectedOutput = [
-      "==> line1 <==",
+      "==> file1 <==",
       "line1",
-      "\n==> line1\nline2 <==",
+      "\n==> file2 <==",
       "line1\nline2",
-      "\n==> line1\nline2\nline3 <==",
+      "\n==> file3 <==",
       "line2\nline3"
     ];
 
@@ -187,8 +197,6 @@ describe("runCommand", function() {
   it("should return no such file head error for non existing file", () => {
     classifiedDetails = { type: "c", count: 3, fileNames: ["file"] };
     let expectedOutput = "head: file: No such file or directory";
-    const existsSync = file => false;
-    const fs = { readFileSync, existsSync };
 
     assert.equal(runCommand(classifiedDetails, fs, "head"), expectedOutput);
   });
@@ -196,8 +204,6 @@ describe("runCommand", function() {
   it("should return no such file tail error for non existing file", () => {
     classifiedDetails = { type: "c", count: 3, fileNames: ["file"] };
     let expectedOutput = "tail: file: No such file or directory";
-    const existsSync = file => false;
-    const fs = { readFileSync, existsSync };
 
     assert.equal(runCommand(classifiedDetails, fs, "tail"), expectedOutput);
   });
@@ -346,27 +352,25 @@ describe("classifyDetails", () => {
 //=====================================================================================================
 
 describe("head", function() {
-  const data = "line1\nline2\nline3";
-
   it("should return first 2 lines of file for -n2 and file as input", function() {
-    let userArgs = ["-n2", data];
-    assert.deepEqual(head(userArgs, fs), "line1\nline2");
+    let userArgs = ["-n2", "file3"];
+    assert.equal(head(userArgs, fs), "line1\nline2");
   });
 
   it("should return first 4 characters of file for -c, 4 and file as input", function() {
-    let userArgs = ["-c", "4", data];
+    let userArgs = ["-c", "4", "file1"];
     assert.deepEqual(head(userArgs, fs), "line");
   });
 
   it("should return illegal line count error msg for -n0 and file as input", function() {
     let errorMsg = "head: illegal line count -- 0";
-    let userArgs = ["-n0", data];
+    let userArgs = ["-n0", "file1"];
     assert.deepEqual(head(userArgs, fs), errorMsg);
   });
 
   it("should return illegal byte count error msg for -c0 and file as input", function() {
     let errorMsg = "head: illegal byte count -- 0";
-    let userArgs = ["-c0", data];
+    let userArgs = ["-c0", "file1"];
     assert.equal(head(userArgs, fs), errorMsg);
   });
 });

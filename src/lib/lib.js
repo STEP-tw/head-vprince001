@@ -21,7 +21,8 @@ const tail = function(userInput, fs) {
   count = Math.abs(classifiedDetails.count);
   classifiedDetails.count = count;
   let output = runCommand(classifiedDetails, fs, "tail");
-  return output.join("\n");
+  //return output.join("\n");
+  return output;
 };
 
 const getFileData = function(data, length = 10, type = "n") {

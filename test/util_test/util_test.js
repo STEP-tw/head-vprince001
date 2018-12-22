@@ -7,34 +7,34 @@ const {
   reverseString
 } = require("../../src/util_lib/util.js");
 
-const reader = function(unicode, file) {
-  return file;
+//====================================================================================================
+
+const files = {
+  file1: "line1",
+  file2: "line1\nline2",
+  file3: "line1\nline2\nline3",
+  file4: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].join("\n"),
+  file5: "line1\nline2\n\n\n"
 };
-const readFileSync = reader.bind(null, "utf8");
-const existsSync = file => true;
-const fs = { readFileSync, existsSync };
+
+const fs = {
+  readFileSync: function(fileName) {
+    return files[fileName];
+  },
+  existsSync: function(fileName) {
+    return files.hasOwnProperty(fileName);
+  }
+};
 
 //====================================================================================================
 
 describe("isFileExists", () => {
-  let fsTrue = {
-    existsSync: file => {
-      return true;
-    }
-  };
-
   it("should return true if file exists", () => {
-    assert.deepEqual(isFileExists(fsTrue, "file1"), true);
+    assert.deepEqual(isFileExists(fs, "file1"), true);
   });
 
-  let fsFalse = {
-    existsSync: file => {
-      return false;
-    }
-  };
-
   it("should return false if file does not exist", () => {
-    assert.deepEqual(isFileExists(fsFalse, "file2"), false);
+    assert.deepEqual(isFileExists(fs, "file"), false);
   });
 });
 
@@ -42,7 +42,7 @@ describe("isFileExists", () => {
 
 describe("addHeading", function() {
   it("should return file name with side arrows for given file name", function() {
-    assert.equal(addHeading("lib.js"), "==> lib.js <==");
+    assert.equal(addHeading("file1"), "==> file1 <==");
   });
 
   it("should return side arrows with space in between for empty string", function() {
@@ -54,7 +54,7 @@ describe("addHeading", function() {
 
 describe("readFile", () => {
   it("should return trimmed file data for existing file", () => {
-    assert.equal(readFile(fs, "file1"), "file1");
+    assert.equal(readFile(fs, "file5"), "line1\nline2");
   });
 });
 
